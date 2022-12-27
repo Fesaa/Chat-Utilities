@@ -24,9 +24,7 @@
           "text" : "Text to replace",
           "message" : "Message to replace with",
           "enabled": "Enabled?",
-          "remove": {
-            "title": "Delete this text replacement\nThis action is irreversible!"
-          }
+          "remove": "Delete this text replacement\nThis action is irreversible!"
         }
       },
       "chatListener": {
