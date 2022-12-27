@@ -1,0 +1,47 @@
+{
+  "cu" : {
+    "settings" : {
+      "name" : "Chat Utilities",
+      "enabled" : {
+        "name" : "Enabled"
+      },
+      "chatListener" : {
+        "name" : "Chat Listeners"
+      },
+      "textReplacement" : {
+        "name" : "Text Replacement"
+      },
+      "openTextReplacementActivity" : {
+        "name" : "Edit text replacements"
+      },
+      "openChatListenerActivity": {
+        "name": "Edit chat listeners"
+      }
+    },
+    "gui" : {
+      "textReplacement" : {
+        "manage" : {
+          "text" : "Text to replace",
+          "message" : "Message to replace with",
+          "enabled": "Enabled?",
+          "remove": {
+            "title": "Delete this text replacement\nThis action is irreversible!"
+          }
+        }
+      },
+      "chatListener": {
+        "manage": {
+          "regex": "Regex to match",
+          "message": "Message to send in response",
+          "sound_id": "Sound to play on match",
+          "delay": "Delay",
+          "chat": "Chat?",
+          "command": "Command?",
+          "sound": "Sound?",
+          "enabled": "Enabled?",
+          "remove": "Delete this chat listener\nThis action is irreversible!"
+        }
+      }
+    }
+  }
+}
