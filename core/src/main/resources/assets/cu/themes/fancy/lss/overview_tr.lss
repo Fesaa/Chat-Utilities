@@ -2,7 +2,7 @@
 
 .text-replacement-list {
   space-between-entries: 4;
-  NameTag {
+  TextReplacement {
     background-color: rgba(70, 70, 70, 80);
     border-radius: 5;
     border-thickness: 0;
