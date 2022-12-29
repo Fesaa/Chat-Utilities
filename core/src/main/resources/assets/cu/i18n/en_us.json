@@ -6,7 +6,17 @@
         "name" : "Enabled"
       },
       "chatListener" : {
-        "name" : "Chat Listeners"
+        "name" : "Chat Listeners",
+        "useAntiSpam": {
+          "name": "Anti Spam feature",
+          "description": "Example; 3/5 will send at max 3 chat responses per 5 minutes."
+        },
+        "maxFrequency": {
+          "name": "Max amount of chat responses in a timespan"
+        },
+        "maxTimeSpan": {
+          "name": "Timespan"
+        }
       },
       "textReplacement" : {
         "name" : "Text Replacement"

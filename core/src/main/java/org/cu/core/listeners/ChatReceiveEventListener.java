@@ -1,14 +1,14 @@
 package org.cu.core.listeners;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import com.google.inject.Inject;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.cu.core.CU;
+import org.cu.core.config.ChatListenerSubConfig;
 import org.cu.core.imp.ChatListener;
+import java.util.Date;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -23,7 +23,7 @@ public class ChatReceiveEventListener {
 
   @Subscribe
   public void onChatReceiveEvent(ChatReceiveEvent chatReceiveEvent) {
-    if (!this.addon.configuration().chatListeners().get()) {return;}
+    if (!this.addon.configuration().getChatListenerSubConfig().isEnabled()) {return;}
 
     for (ChatListener chatListener : this.addon.configuration().getChatListeners().values()) {
       if (!chatListener.isEnabled()) {
@@ -31,27 +31,38 @@ public class ChatReceiveEventListener {
       }
 
       String msg = chatListener.getMsg();
+      Pattern pattern;
       Matcher matcher;
 
       if (this.addon.getPatternHashMap().containsKey(chatListener.getID())) {
-        matcher = this.addon.getPatternHashMap().get(chatListener.getID())
-            .matcher(chatReceiveEvent.chatMessage().getPlainText());
+        pattern = this.addon.getPatternHashMap().get(chatListener.getID());
       } else {
         ClientPlayer p = this.addon.labyAPI().minecraft().clientPlayer();
         String name = p.getName();
-        Pattern pattern = Pattern.compile(chatListener.getRegex().replace("&player", name));
-        matcher = pattern.matcher(chatReceiveEvent.chatMessage().getPlainText());
+        pattern = Pattern.compile(chatListener.getRegex().replace("&player", name));
+        this.addon.getPatternHashMap().put(chatListener.getID(), pattern);
       }
+
+      matcher = pattern.matcher(chatReceiveEvent.chatMessage().getPlainText());
 
       if (!matcher.matches()) {
         continue;
       }
 
+      // Anti Spam
+      long now = (new Date()).getTime();
+      ChatListenerSubConfig chatListenerSubConfig = this.addon.configuration().getChatListenerSubConfig();
+      boolean useAntiSpam = chatListenerSubConfig.getUseAntiSpam().get();
+      int maxFrequency = chatListenerSubConfig.getMaxFrequency().get();
+      int maxTimeSpan = chatListenerSubConfig.getMaxTimeSpan().get();
+      boolean canUse = !chatListener.canUse(now, maxFrequency, maxTimeSpan);
+      chatListener.addUsage(now);
+
       for (int j = 0; j + 1 <= matcher.groupCount(); j++) {
         msg = msg.replace("&" + (j+1), matcher.group(j+1));
       }
 
-      if (chatListener.isChat()) {
+      if (chatListener.isChat() && (!useAntiSpam || canUse)) {
         smartSendWithDelay(chatListener, msg);
       }
 

@@ -1,6 +1,5 @@
-package org.cu.core;
+package org.cu.core.config;
 
-import net.kyori.adventure.util.HSVLike;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.activity.Activity;
 import net.labymod.api.client.gui.screen.widget.widgets.activity.settings.AddonActivityWidget.AddonActivitySetting;
@@ -13,20 +12,17 @@ import org.cu.core.gui.activity.ChatListenerActivity;
 import org.cu.core.gui.activity.TextReplacementActivity;
 import org.cu.core.imp.ChatListener;
 import org.cu.core.imp.TextReplacement;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @SuppressWarnings("FieldMayBeFinal")
 @ConfigName("settings")
-public class CUConfig extends AddonConfig {
+public class MainConfig extends AddonConfig {
 
   @SwitchSetting
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
   @SwitchSetting
-  private final ConfigProperty<Boolean> chatListener = new ConfigProperty<>(true);
+  private final ChatListenerSubConfig chatListener = new ChatListenerSubConfig();
 
   @SwitchSetting
   private final ConfigProperty<Boolean> textReplacement = new ConfigProperty<>(true);
@@ -57,7 +53,7 @@ public class CUConfig extends AddonConfig {
   public ConfigProperty<Boolean> enabled() {
     return this.enabled;
   }
-  public ConfigProperty<Boolean> chatListeners() {
+  public ChatListenerSubConfig getChatListenerSubConfig() {
     return this.chatListener;
   }
   public ConfigProperty<Boolean> textReplacement() {

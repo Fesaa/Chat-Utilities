@@ -4,6 +4,7 @@ import com.google.inject.Singleton;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.models.addon.annotation.AddonListener;
+import org.cu.core.config.MainConfig;
 import org.cu.core.imp.ChatListener;
 import org.cu.core.listeners.ChatMessageSendEventListener;
 import org.cu.core.listeners.ChatReceiveEventListener;
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 
 @Singleton
 @AddonListener
-public class CU extends LabyAddon<CUConfig> {
+public class CU extends LabyAddon<MainConfig> {
 
   private final HashMap<Integer, Pattern> patternHashMap = new HashMap<>();
 
@@ -26,8 +27,8 @@ public class CU extends LabyAddon<CUConfig> {
   }
 
   @Override
-  protected Class<CUConfig> configurationClass() {
-    return CUConfig.class;
+  protected Class<MainConfig> configurationClass() {
+    return MainConfig.class;
   }
 
   public void populateHasMap() {

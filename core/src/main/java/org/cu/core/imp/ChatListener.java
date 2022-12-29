@@ -1,6 +1,9 @@
 package org.cu.core.imp;
 
+import org.cu.core.CU;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ChatListener {
 
@@ -13,6 +16,8 @@ public class ChatListener {
   private boolean chat;
   private boolean command;
   private boolean sound;
+  private List<Long> usageList;
+
 
   private ChatListener(int ID, boolean enabled, String regex, String msg, String soundId, int delay, boolean chat, boolean command, boolean sound) {
     this.ID = ID;
@@ -24,6 +29,7 @@ public class ChatListener {
     this.chat = chat;
     this.command = command;
     this.sound = sound;
+    this.usageList = new ArrayList<>();
   }
 
   public static ChatListener create(int ID, boolean enabled, String regex, String msg, String soundId, int delay,  boolean chat, boolean command, boolean sound) {
@@ -100,5 +106,28 @@ public class ChatListener {
 
   public void setSound(boolean sound) {
     this.sound = sound;
+  }
+
+  public void addUsage(long now) {
+    this.usageList.add(now);
+  }
+
+  public boolean canUse(long now, int maxUses, int maxTime) {
+    int c = 0;
+    for (Long useTime : this.usageList) {
+      if (now - useTime < maxTime * 1000 *  60L) {
+        c++;
+      }
+    }
+    if (c == 0) {
+      this.resetUsages();
+      return true;
+    }
+
+    return c < maxUses;
+  }
+
+  private void resetUsages() {
+    this.usageList = new ArrayList<>();
   }
 }
