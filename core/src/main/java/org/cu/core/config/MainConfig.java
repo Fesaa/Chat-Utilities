@@ -27,14 +27,14 @@ public class MainConfig extends AddonConfig {
   @SwitchSetting
   private final ConfigProperty<Boolean> textReplacement = new ConfigProperty<>(true);
 
-  private HashMap<Integer, TextReplacement> textReplacements = new HashMap<>();
-  private HashMap<Integer, ChatListener> chatListeners = new HashMap<>();
+  private ConfigProperty<HashMap<Integer, TextReplacement>> textReplacements = new ConfigProperty<>(new HashMap<>());
+  private ConfigProperty<HashMap<Integer, ChatListener>> chatListeners = new ConfigProperty<>(new HashMap<>());
 
   public HashMap<Integer, TextReplacement> getTextReplacements() {
-    return this.textReplacements;
+    return this.textReplacements.get();
   }
   public HashMap<Integer, ChatListener> getChatListeners() {
-    return this.chatListeners;
+    return this.chatListeners.get();
   }
 
   @MethodOrder(after = "textReplacement")
