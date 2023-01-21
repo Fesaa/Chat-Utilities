@@ -6,9 +6,8 @@ import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.widget.SimpleWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.renderer.IconWidget;
+import net.labymod.api.client.resources.ResourceLocation;
 import org.cu.core.imp.ChatListener;
-import java.util.UUID;
-
 public class ChatListenerWidget extends SimpleWidget {
 
   private ChatListener chatListener;
@@ -26,7 +25,8 @@ public class ChatListenerWidget extends SimpleWidget {
       this.addId("disabled");
     }
 
-    IconWidget iconWidget = new IconWidget(Icon.head(UUID.fromString("17d896dd-814a-4cfb-aa44-b935af4dcdeb")));
+    ResourceLocation resourceLocation = ResourceLocation.create("cu", "sprites.png");
+    IconWidget iconWidget = new IconWidget(Icon.sprite16(resourceLocation, 1, 0));
     iconWidget.addId("avatar");
     this.addChild(iconWidget);
 
