@@ -1,6 +1,10 @@
 package org.cu.core.listeners;
 
-import com.google.inject.Inject;
+import java.util.Date;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.event.Subscribe;
@@ -8,17 +12,11 @@ import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.cu.core.CU;
 import org.cu.core.config.ChatListenerSubConfig;
 import org.cu.core.imp.ChatListener;
-import java.util.Date;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ChatReceiveEventListener {
 
   private final CU addon;
 
-  @Inject
   public ChatReceiveEventListener(CU addon) {this.addon = addon;}
 
   @Subscribe
@@ -72,9 +70,7 @@ public class ChatReceiveEventListener {
 
       if (chatListener.isSound()) {
         if (chatListener.getDelay() > 0) {
-          Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors()).schedule(() -> {
-            this.addon.labyAPI().minecraft().sounds().playSound(ResourceLocation.create("minecraft", chatListener.getSoundId()), 100, 1);
-          }, chatListener.getDelay(), TimeUnit.MILLISECONDS);
+          Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors()).schedule(() -> this.addon.labyAPI().minecraft().sounds().playSound(ResourceLocation.create("minecraft", chatListener.getSoundId()), 100, 1), chatListener.getDelay(), TimeUnit.MILLISECONDS);
         } else {
           this.addon.labyAPI().minecraft().sounds().playSound(ResourceLocation.create("minecraft", chatListener.getSoundId()), 100, 1);
         }
@@ -86,9 +82,7 @@ public class ChatReceiveEventListener {
 
   private void smartSendWithDelay(ChatListener chatListener, String msg) {
     if (chatListener.getDelay() > 0) {
-      Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors()).schedule(() -> {
-        this.addon.labyAPI().minecraft().chatExecutor().chat(msg, false);
-      }, chatListener.getDelay(), TimeUnit.MILLISECONDS);
+      Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors()).schedule(() -> this.addon.labyAPI().minecraft().chatExecutor().chat(msg, false), chatListener.getDelay(), TimeUnit.MILLISECONDS);
     } else {
       this.addon.labyAPI().minecraft().chatExecutor().chat(msg, false);
     }

@@ -1,6 +1,5 @@
 package org.cu.core.imp;
 
-import org.cu.core.CU;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

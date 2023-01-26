@@ -1,7 +1,6 @@
 package org.cu.core.gui.activity;
 
 
-import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -43,8 +42,7 @@ public class TextReplacementActivity extends Activity {
 
   private Action action;
 
-  @Inject
-  private TextReplacementActivity(CU addon) {
+  public TextReplacementActivity(CU addon) {
     this.addon = addon;
 
     this.textReplacementWidgets = new ArrayList<>();
@@ -160,12 +158,10 @@ public class TextReplacementActivity extends Activity {
 
     TextFieldWidget textTextField = new TextFieldWidget();
     textTextField.setText(textReplacementWidget.getTextReplacement().getText());
-    textTextField.updateListener(newValue -> {
-      doneButton.setEnabled(
-          !textTextField.getText().trim().isEmpty()
-          && !messageTextField.getText().trim().isEmpty()
-        );
-    });
+    textTextField.updateListener(newValue -> doneButton.setEnabled(
+        !textTextField.getText().trim().isEmpty()
+        && !messageTextField.getText().trim().isEmpty()
+      ));
     this.inputWidget.addContent(textTextField);
 
     // Text to replace with
@@ -174,12 +170,10 @@ public class TextReplacementActivity extends Activity {
     this.inputWidget.addContent(labelMessage);
 
     messageTextField.setText(textReplacementWidget.getTextReplacement().getMessage());
-    messageTextField.updateListener(newValue -> {
-      doneButton.setEnabled(
-          !textTextField.getText().trim().isEmpty()
-          && !messageTextField.getText().trim().isEmpty()
-      );
-    });
+    messageTextField.updateListener(newValue -> doneButton.setEnabled(
+        !textTextField.getText().trim().isEmpty()
+        && !messageTextField.getText().trim().isEmpty()
+    ));
     this.inputWidget.addContent(messageTextField);
 
     // Enabled?

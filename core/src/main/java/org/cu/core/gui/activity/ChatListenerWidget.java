@@ -1,6 +1,6 @@
 package org.cu.core.gui.activity;
 
-import net.kyori.adventure.text.Component;
+import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.widget.SimpleWidget;

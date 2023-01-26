@@ -1,7 +1,10 @@
 package org.cu.core.gui.activity;
 
-import com.google.inject.Inject;
-import net.labymod.api.client.gui.icon.Icon;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import net.labymod.api.client.gui.screen.LabyScreen;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.activity.Activity;
@@ -18,17 +21,9 @@ import net.labymod.api.client.gui.screen.widget.widgets.layout.FlexibleContentWi
 import net.labymod.api.client.gui.screen.widget.widgets.layout.ScrollWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
-import net.labymod.api.client.gui.screen.widget.widgets.renderer.IconWidget;
 import org.cu.core.CU;
 import org.cu.core.imp.ChatListener;
-import org.cu.core.imp.TextReplacement;
 import org.jetbrains.annotations.Nullable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 @AutoActivity
 @Link("manage_cl.lss")
@@ -50,8 +45,7 @@ public class ChatListenerActivity extends Activity {
 
   private Action action;
 
-  @Inject
-  private ChatListenerActivity(CU addon) {
+  public ChatListenerActivity(CU addon) {
     this.addon = addon;
 
     this.chatListenerWidgets = new ArrayList<>();
@@ -176,12 +170,10 @@ public class ChatListenerActivity extends Activity {
 
     TextFieldWidget regexTextField = new TextFieldWidget();
     regexTextField.setText(chatListenerWidget.getChatListener().getRegex());
-    regexTextField.updateListener(newValue -> {
-      doneButton.setEnabled(
-          validateDoneButton(regexTextField, messageTextField, soundIDTextField,
-                              chatCheckBox, commandCheckBox, soundCheckBox)
-      );
-    });
+    regexTextField.updateListener(newValue -> doneButton.setEnabled(
+        validateDoneButton(regexTextField, messageTextField, soundIDTextField,
+                            chatCheckBox, commandCheckBox, soundCheckBox)
+    ));
     this.inputWidget.addContent(regexTextField);
 
     // Message
@@ -191,12 +183,10 @@ public class ChatListenerActivity extends Activity {
 
 
     messageTextField.setText(chatListenerWidget.getChatListener().getMsg());
-    messageTextField.updateListener(newValue -> {
-      doneButton.setEnabled(
-          validateDoneButton(regexTextField, messageTextField, soundIDTextField,
-                              chatCheckBox, commandCheckBox, soundCheckBox)
-      );
-    });
+    messageTextField.updateListener(newValue -> doneButton.setEnabled(
+        validateDoneButton(regexTextField, messageTextField, soundIDTextField,
+                            chatCheckBox, commandCheckBox, soundCheckBox)
+    ));
     this.inputWidget.addContent(messageTextField);
 
     // Sound ID
@@ -206,12 +196,10 @@ public class ChatListenerActivity extends Activity {
 
 
     soundIDTextField.setText(chatListenerWidget.getChatListener().getSoundId());
-    soundIDTextField.updateListener(newValue -> {
-      doneButton.setEnabled(
-          validateDoneButton(regexTextField, messageTextField, soundIDTextField,
-              chatCheckBox, commandCheckBox, soundCheckBox)
-      );
-    });
+    soundIDTextField.updateListener(newValue -> doneButton.setEnabled(
+        validateDoneButton(regexTextField, messageTextField, soundIDTextField,
+            chatCheckBox, commandCheckBox, soundCheckBox)
+    ));
     this.inputWidget.addContent(soundIDTextField);
 
     // Delay
@@ -222,9 +210,7 @@ public class ChatListenerActivity extends Activity {
 
     TextFieldWidget delayTextField = new TextFieldWidget();
     delayTextField.setText(String.valueOf(chatListenerWidget.getChatListener().getDelay()));
-    delayTextField.validator(newValue -> {
-      return this.isInt.matcher(newValue).matches();
-    });
+    delayTextField.validator(newValue -> this.isInt.matcher(newValue).matches());
     this.inputWidget.addContent(delayTextField);
 
 
@@ -244,12 +230,10 @@ public class ChatListenerActivity extends Activity {
 
     chatCheckBox.addId("checkbox-item");
     chatCheckBox.setState(chatListenerWidget.getChatListener().isChat() ? State.CHECKED : State.UNCHECKED);
-    chatCheckBox.setActionListener(() -> {
-      doneButton.setEnabled(
-          validateDoneButton(regexTextField, messageTextField, soundIDTextField,
-              chatCheckBox, commandCheckBox, soundCheckBox)
-      );
-    });
+    chatCheckBox.setActionListener(() -> doneButton.setEnabled(
+        validateDoneButton(regexTextField, messageTextField, soundIDTextField,
+            chatCheckBox, commandCheckBox, soundCheckBox)
+    ));
     chatDiv.addChild(chatCheckBox);
     chatCommandCheckBoxList.addEntry(chatDiv);
 
@@ -264,12 +248,10 @@ public class ChatListenerActivity extends Activity {
 
     commandCheckBox.addId("checkbox-item");
     commandCheckBox.setState(chatListenerWidget.getChatListener().isCommand() ? State.CHECKED : State.UNCHECKED);
-    commandCheckBox.setActionListener(() -> {
-      doneButton.setEnabled(
-          validateDoneButton(regexTextField, messageTextField, soundIDTextField,
-              chatCheckBox, commandCheckBox, soundCheckBox)
-      );
-    });
+    commandCheckBox.setActionListener(() -> doneButton.setEnabled(
+        validateDoneButton(regexTextField, messageTextField, soundIDTextField,
+            chatCheckBox, commandCheckBox, soundCheckBox)
+    ));
     commandDiv.addChild(commandCheckBox);
     chatCommandCheckBoxList.addEntry(commandDiv);
 
@@ -290,12 +272,10 @@ public class ChatListenerActivity extends Activity {
 
     soundCheckBox.addId("checkbox-item");
     soundCheckBox.setState(chatListenerWidget.getChatListener().isSound() ? State.CHECKED : State.UNCHECKED);
-    soundCheckBox.setActionListener(() -> {
-      doneButton.setEnabled(
-          validateDoneButton(regexTextField, messageTextField, soundIDTextField,
-              chatCheckBox, commandCheckBox, soundCheckBox)
-      );
-    });
+    soundCheckBox.setActionListener(() -> doneButton.setEnabled(
+        validateDoneButton(regexTextField, messageTextField, soundIDTextField,
+            chatCheckBox, commandCheckBox, soundCheckBox)
+    ));
     soundDiv.addChild(soundCheckBox);
     soundEnabledCheckBoxList.addEntry(soundDiv);
 
@@ -310,12 +290,10 @@ public class ChatListenerActivity extends Activity {
     CheckBoxWidget enabledCheckBox = new CheckBoxWidget();
     enabledCheckBox.addId("checkbox-item");
     enabledCheckBox.setState(chatListenerWidget.getChatListener().isEnabled() ? State.CHECKED : State.UNCHECKED);
-    enabledCheckBox.setActionListener(() -> {
-      doneButton.setEnabled(
-          validateDoneButton(regexTextField, messageTextField, soundIDTextField,
-              chatCheckBox, commandCheckBox, soundCheckBox)
-      );
-    });
+    enabledCheckBox.setActionListener(() -> doneButton.setEnabled(
+        validateDoneButton(regexTextField, messageTextField, soundIDTextField,
+            chatCheckBox, commandCheckBox, soundCheckBox)
+    ));
     enabledDiv.addChild(enabledCheckBox);
     soundEnabledCheckBoxList.addEntry(enabledDiv);
 

@@ -1,18 +1,18 @@
 package org.cu.core.config;
 
+import java.util.HashMap;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.activity.Activity;
 import net.labymod.api.client.gui.screen.widget.widgets.activity.settings.AddonActivityWidget.AddonActivitySetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
-import net.labymod.api.inject.LabyGuice;
 import net.labymod.api.util.MethodOrder;
+import org.cu.core.CU;
 import org.cu.core.gui.activity.ChatListenerActivity;
 import org.cu.core.gui.activity.TextReplacementActivity;
 import org.cu.core.imp.ChatListener;
 import org.cu.core.imp.TextReplacement;
-import java.util.HashMap;
 
 @SuppressWarnings("FieldMayBeFinal")
 @ConfigName("settings")
@@ -40,13 +40,13 @@ public class MainConfig extends AddonConfig {
   @MethodOrder(after = "textReplacement")
   @AddonActivitySetting
   public Activity openTextReplacementActivity() {
-    return LabyGuice.getInstance(TextReplacementActivity.class);
+    return new TextReplacementActivity(CU.get());
   }
 
   @MethodOrder(after = "chatListener")
   @AddonActivitySetting
   public Activity openChatListenerActivity() {
-    return LabyGuice.getInstance(ChatListenerActivity.class);
+    return new ChatListenerActivity(CU.get());
   }
 
   @Override

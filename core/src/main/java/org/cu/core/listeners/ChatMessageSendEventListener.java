@@ -1,6 +1,5 @@
 package org.cu.core.listeners;
 
-import com.google.inject.Inject;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatMessageSendEvent;
 import org.cu.core.CU;
@@ -10,7 +9,6 @@ public class ChatMessageSendEventListener {
 
   private final CU addon;
 
-  @Inject
   public ChatMessageSendEventListener(CU addon) {this.addon = addon;}
 
   @Subscribe
