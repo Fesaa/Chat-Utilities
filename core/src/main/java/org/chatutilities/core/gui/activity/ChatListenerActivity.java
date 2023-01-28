@@ -1,4 +1,4 @@
-package org.cu.core.gui.activity;
+package org.chatutilities.core.gui.activity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +21,8 @@ import net.labymod.api.client.gui.screen.widget.widgets.layout.FlexibleContentWi
 import net.labymod.api.client.gui.screen.widget.widgets.layout.ScrollWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
-import org.cu.core.CU;
-import org.cu.core.imp.ChatListener;
+import org.chatutilities.core.CU;
+import org.chatutilities.core.imp.ChatListener;
 import org.jetbrains.annotations.Nullable;
 
 @AutoActivity

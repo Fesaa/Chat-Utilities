@@ -1,9 +1,9 @@
-package org.cu.core.listeners;
+package org.chatutilities.core.listeners;
 
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatMessageSendEvent;
-import org.cu.core.CU;
-import org.cu.core.imp.TextReplacement;
+import org.chatutilities.core.CU;
+import org.chatutilities.core.imp.TextReplacement;
 
 public class ChatMessageSendEventListener {
 

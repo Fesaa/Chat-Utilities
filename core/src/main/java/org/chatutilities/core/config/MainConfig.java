@@ -1,4 +1,4 @@
-package org.cu.core.config;
+package org.chatutilities.core.config;
 
 import java.util.HashMap;
 import net.labymod.api.addon.AddonConfig;
@@ -8,11 +8,11 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.Switc
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.util.MethodOrder;
-import org.cu.core.CU;
-import org.cu.core.gui.activity.ChatListenerActivity;
-import org.cu.core.gui.activity.TextReplacementActivity;
-import org.cu.core.imp.ChatListener;
-import org.cu.core.imp.TextReplacement;
+import org.chatutilities.core.CU;
+import org.chatutilities.core.gui.activity.ChatListenerActivity;
+import org.chatutilities.core.gui.activity.TextReplacementActivity;
+import org.chatutilities.core.imp.ChatListener;
+import org.chatutilities.core.imp.TextReplacement;
 
 @SuppressWarnings("FieldMayBeFinal")
 @ConfigName("settings")

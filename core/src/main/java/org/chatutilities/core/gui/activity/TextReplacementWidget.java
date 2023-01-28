@@ -1,4 +1,4 @@
-package org.cu.core.gui.activity;
+package org.chatutilities.core.gui.activity;
 
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.icon.Icon;
@@ -8,7 +8,7 @@ import net.labymod.api.client.gui.screen.widget.SimpleWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.renderer.IconWidget;
 import net.labymod.api.client.resources.ResourceLocation;
-import org.cu.core.imp.TextReplacement;
+import org.chatutilities.core.imp.TextReplacement;
 
 @AutoWidget
 public class TextReplacementWidget extends SimpleWidget {

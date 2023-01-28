@@ -1,14 +1,14 @@
-package org.cu.core;
+package org.chatutilities.core;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.models.addon.annotation.AddonMain;
-import org.cu.core.config.MainConfig;
-import org.cu.core.imp.ChatListener;
-import org.cu.core.listeners.ChatMessageSendEventListener;
-import org.cu.core.listeners.ChatReceiveEventListener;
+import org.chatutilities.core.config.MainConfig;
+import org.chatutilities.core.imp.ChatListener;
+import org.chatutilities.core.listeners.ChatMessageSendEventListener;
+import org.chatutilities.core.listeners.ChatReceiveEventListener;
 
 @AddonMain
 public class CU extends LabyAddon<MainConfig> {

@@ -1,4 +1,4 @@
-package org.cu.core.listeners;
+package org.chatutilities.core.listeners;
 
 import java.util.Date;
 import java.util.concurrent.Executors;
@@ -9,9 +9,9 @@ import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
-import org.cu.core.CU;
-import org.cu.core.config.ChatListenerSubConfig;
-import org.cu.core.imp.ChatListener;
+import org.chatutilities.core.CU;
+import org.chatutilities.core.config.ChatListenerSubConfig;
+import org.chatutilities.core.imp.ChatListener;
 
 public class ChatReceiveEventListener {
 

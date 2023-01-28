@@ -1,4 +1,4 @@
-package org.cu.core.imp;
+package org.chatutilities.core.imp;
 
 import java.util.ArrayList;
 import java.util.Date;

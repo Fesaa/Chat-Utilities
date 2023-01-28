@@ -1,4 +1,4 @@
-package org.cu.core.config;
+package org.chatutilities.core.config;
 
 import net.labymod.api.client.gui.screen.widget.widgets.input.SliderWidget.SliderSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;

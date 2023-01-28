@@ -1,11 +1,11 @@
-package org.cu.core.imp;
+package org.chatutilities.core.imp;
 
 
 import java.util.Date;
 
 public class TextReplacement {
 
-  private int ID;
+  private final int ID;
   private boolean enabled;
   private String text;
   private String message;
