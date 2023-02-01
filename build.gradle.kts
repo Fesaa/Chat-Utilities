@@ -10,9 +10,9 @@ version = "1.0.0"
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
 labyMod {
-    defaultPackageName = "org.example" //change this to your main package name (used by all modules)
+    defaultPackageName = "org.chatutilities" //change this to your main package name (used by all modules)
     addonInfo {
-        namespace = "chatutiltities"
+        namespace = "chatutilities"
         displayName = "Chat Utilities"
         author = "Fesa"
         description = "Adds chat listeners and text replacement to the LabyMod client."

@@ -25,7 +25,7 @@ public class ChatListenerWidget extends SimpleWidget {
       this.addId("disabled");
     }
 
-    ResourceLocation resourceLocation = ResourceLocation.create("cu", "sprites.png");
+    ResourceLocation resourceLocation = ResourceLocation.create("chatutilities", "sprites.png");
     IconWidget iconWidget = new IconWidget(Icon.sprite16(resourceLocation, 1, 0));
     iconWidget.addId("avatar");
     this.addChild(iconWidget);

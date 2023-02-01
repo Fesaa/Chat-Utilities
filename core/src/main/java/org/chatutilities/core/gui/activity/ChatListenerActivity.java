@@ -119,7 +119,7 @@ public class ChatListenerActivity extends Activity {
     this.inputWidget = new FlexibleContentWidget();
     this.inputWidget.addId("remove-container");
 
-    ComponentWidget confirmationWidget = ComponentWidget.i18n("cu.gui.chatListener.manage.remove");
+    ComponentWidget confirmationWidget = ComponentWidget.i18n("chatutilities.gui.chatListener.manage.remove");
     confirmationWidget.addId("remove-confirmation");
     this.inputWidget.addContent(confirmationWidget);
 
@@ -164,7 +164,7 @@ public class ChatListenerActivity extends Activity {
     this.inputWidget.addId("input-list");
 
     // Regex
-    ComponentWidget labelRegex = ComponentWidget.i18n("cu.gui.chatListener.manage.regex");
+    ComponentWidget labelRegex = ComponentWidget.i18n("chatutilities.gui.chatListener.manage.regex");
     labelRegex.addId("label-text");
     this.inputWidget.addContent(labelRegex);
 
@@ -177,7 +177,7 @@ public class ChatListenerActivity extends Activity {
     this.inputWidget.addContent(regexTextField);
 
     // Message
-    ComponentWidget labelMessage = ComponentWidget.i18n("cu.gui.chatListener.manage.message");
+    ComponentWidget labelMessage = ComponentWidget.i18n("chatutilities.gui.chatListener.manage.message");
     labelMessage.addId("label-text");
     this.inputWidget.addContent(labelMessage);
 
@@ -190,7 +190,7 @@ public class ChatListenerActivity extends Activity {
     this.inputWidget.addContent(messageTextField);
 
     // Sound ID
-    ComponentWidget labelSoundID = ComponentWidget.i18n("cu.gui.chatListener.manage.sound_id");
+    ComponentWidget labelSoundID = ComponentWidget.i18n("chatutilities.gui.chatListener.manage.sound_id");
     labelSoundID.addId("label-text");
     this.inputWidget.addContent(labelSoundID);
 
@@ -203,7 +203,7 @@ public class ChatListenerActivity extends Activity {
     this.inputWidget.addContent(soundIDTextField);
 
     // Delay
-    ComponentWidget labelDelay = ComponentWidget.i18n("cu.gui.chatListener.manage.delay");
+    ComponentWidget labelDelay = ComponentWidget.i18n("chatutilities.gui.chatListener.manage.delay");
     labelDelay.addId("label-text");
     this.inputWidget.addContent(labelDelay);
 
@@ -223,7 +223,7 @@ public class ChatListenerActivity extends Activity {
     DivWidget chatDiv = new DivWidget();
     chatDiv.addId("checkbox-div");
 
-    ComponentWidget chatText = ComponentWidget.i18n("cu.gui.chatListener.manage.chat");
+    ComponentWidget chatText = ComponentWidget.i18n("chatutilities.gui.chatListener.manage.chat");
     chatText.addId("checkbox-name");
     chatDiv.addChild(chatText);
 
@@ -241,7 +241,7 @@ public class ChatListenerActivity extends Activity {
     DivWidget commandDiv = new DivWidget();
     commandDiv.addId("checkbox-div");
 
-    ComponentWidget commandText = ComponentWidget.i18n("cu.gui.chatListener.manage.command");
+    ComponentWidget commandText = ComponentWidget.i18n("chatutilities.gui.chatListener.manage.command");
     commandText.addId("checkbox-name");
     commandDiv.addChild(commandText);
 
@@ -265,7 +265,7 @@ public class ChatListenerActivity extends Activity {
     DivWidget soundDiv = new DivWidget();
     soundDiv.addId("checkbox-div");
 
-    ComponentWidget soundText = ComponentWidget.i18n("cu.gui.chatListener.manage.sound");
+    ComponentWidget soundText = ComponentWidget.i18n("chatutilities.gui.chatListener.manage.sound");
     soundText.addId("checkbox-name");
     soundDiv.addChild(soundText);
 
@@ -283,7 +283,7 @@ public class ChatListenerActivity extends Activity {
     DivWidget enabledDiv = new DivWidget();
     enabledDiv.addId("checkbox-div");
 
-    ComponentWidget enabledText = ComponentWidget.i18n("cu.gui.chatListener.manage.enabled");
+    ComponentWidget enabledText = ComponentWidget.i18n("chatutilities.gui.chatListener.manage.enabled");
     enabledText.addId("checkbox-name");
     enabledDiv.addChild(enabledText);
 

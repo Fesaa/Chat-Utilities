@@ -116,7 +116,7 @@ public class TextReplacementActivity extends Activity {
     this.inputWidget = new FlexibleContentWidget();
     this.inputWidget.addId("remove-container");
 
-    ComponentWidget confirmationWidget = ComponentWidget.i18n("cu.gui.textReplacement.manage.remove.title");
+    ComponentWidget confirmationWidget = ComponentWidget.i18n("chatutilities.gui.textReplacement.manage.remove.title");
     confirmationWidget.addId("remove-confirmation");
     this.inputWidget.addContent(confirmationWidget);
 
@@ -152,7 +152,7 @@ public class TextReplacementActivity extends Activity {
     this.inputWidget.addId("input-list");
 
     // Text to replace
-    ComponentWidget labelText = ComponentWidget.i18n("cu.gui.textReplacement.manage.text");
+    ComponentWidget labelText = ComponentWidget.i18n("chatutilities.gui.textReplacement.manage.text");
     labelText.addId("label-text");
     this.inputWidget.addContent(labelText);
 
@@ -165,7 +165,7 @@ public class TextReplacementActivity extends Activity {
     this.inputWidget.addContent(textTextField);
 
     // Text to replace with
-    ComponentWidget labelMessage = ComponentWidget.i18n("cu.gui.textReplacement.manage.message");
+    ComponentWidget labelMessage = ComponentWidget.i18n("chatutilities.gui.textReplacement.manage.message");
     labelMessage.addId("label-text");
     this.inputWidget.addContent(labelMessage);
 
@@ -183,7 +183,7 @@ public class TextReplacementActivity extends Activity {
     DivWidget enabledDiv = new DivWidget();
     enabledDiv.addId("checkbox-div");
 
-    ComponentWidget enabledText = ComponentWidget.i18n("cu.gui.textReplacement.manage.enabled");
+    ComponentWidget enabledText = ComponentWidget.i18n("chatutilities.gui.textReplacement.manage.enabled");
     enabledText.addId("checkbox-name");
     enabledDiv.addChild(enabledText);
 
