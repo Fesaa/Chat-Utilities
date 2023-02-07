@@ -21,7 +21,6 @@ public class MainConfig extends AddonConfig {
   @SwitchSetting
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
 
-  @SwitchSetting
   private final ChatListenerSubConfig chatListener = new ChatListenerSubConfig();
 
   @SwitchSetting
