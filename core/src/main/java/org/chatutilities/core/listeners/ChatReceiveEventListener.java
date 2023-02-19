@@ -5,6 +5,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.event.ClickEvent;
+import net.labymod.api.client.component.event.HoverEvent;
+import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.event.Subscribe;
@@ -76,6 +80,21 @@ public class ChatReceiveEventListener {
         }
       }
 
+    }
+
+    if (this.addon.configuration().getCopy().get()) {
+      String msg = chatReceiveEvent.chatMessage().getPlainText();
+      if (msg.trim().equals("")) {
+        return;
+      }
+      this.addon.logger().info(msg);
+      chatReceiveEvent.setMessage(chatReceiveEvent.message()
+          .append(Component.text(" [", NamedTextColor.WHITE))
+          .append(Component.text("Copy", NamedTextColor.GREEN)
+              .clickEvent(ClickEvent.copyToClipboard(msg))
+              .hoverEvent(HoverEvent.showText(Component.text("Click to copy."))))
+          .append(Component.text("]", NamedTextColor.WHITE))
+      );
     }
 
   }

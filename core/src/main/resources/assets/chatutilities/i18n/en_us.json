@@ -26,6 +26,9 @@
       },
       "openChatListenerActivity": {
         "name": "Edit chat listeners"
+      },
+      "copy": {
+        "name": "Copy Button"
       }
     },
     "gui" : {
