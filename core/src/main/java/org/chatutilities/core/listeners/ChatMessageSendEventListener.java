@@ -13,7 +13,10 @@ public class ChatMessageSendEventListener {
 
   @Subscribe
   public void onChatMessageSendEvent(ChatMessageSendEvent chatMessageSendEvent) {
-    if (!this.addon.configuration().textReplacement().get()) {return;}
+    if (!this.addon.configuration().textReplacement().get()
+    || !this.addon.configuration().enabled().get()) {
+      return;
+    }
 
     String msg = chatMessageSendEvent.getMessage();
 

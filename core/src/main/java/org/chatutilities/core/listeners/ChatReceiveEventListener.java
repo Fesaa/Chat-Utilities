@@ -25,7 +25,10 @@ public class ChatReceiveEventListener {
 
   @Subscribe
   public void onChatReceiveEvent(ChatReceiveEvent chatReceiveEvent) {
-    if (!this.addon.configuration().getChatListenerSubConfig().isEnabled()) {return;}
+    if (!this.addon.configuration().getChatListenerSubConfig().isEnabled()
+        || !this.addon.configuration().enabled().get()) {
+      return;
+    }
 
     for (ChatListener chatListener : this.addon.configuration().getChatListeners().values()) {
       if (!chatListener.isEnabled()) {
@@ -39,7 +42,12 @@ public class ChatReceiveEventListener {
       if (this.addon.getPatternHashMap().containsKey(chatListener.getID())) {
         pattern = this.addon.getPatternHashMap().get(chatListener.getID());
       } else {
-        ClientPlayer p = this.addon.labyAPI().minecraft().clientPlayer();
+        ClientPlayer p = this.addon.labyAPI().minecraft().getClientPlayer();
+
+        if (p == null) {
+          return;
+        }
+
         String name = p.getName();
         pattern = Pattern.compile(chatListener.getRegex().replace("&player", name));
         this.addon.getPatternHashMap().put(chatListener.getID(), pattern);
