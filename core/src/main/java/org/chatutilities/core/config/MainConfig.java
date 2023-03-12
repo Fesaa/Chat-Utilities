@@ -1,20 +1,15 @@
 package org.chatutilities.core.config;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import net.labymod.api.addon.AddonConfig;
-import net.labymod.api.client.gui.screen.activity.Activity;
-import net.labymod.api.client.gui.screen.widget.widgets.activity.settings.AddonActivityWidget.AddonActivitySetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
+import net.labymod.api.configuration.loader.annotation.Exclude;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
-import net.labymod.api.util.MethodOrder;
-import org.chatutilities.core.CU;
-import org.chatutilities.core.gui.activity.ChatListenerActivity;
-import org.chatutilities.core.gui.activity.TextReplacementActivity;
-import org.chatutilities.core.imp.ChatListener;
-import org.chatutilities.core.imp.TextReplacement;
+import org.chatutilities.core.config.impl.ChatListenerEntry;
+import org.chatutilities.core.config.impl.TextReplacementEntry;
 
-@SuppressWarnings("FieldMayBeFinal")
 @ConfigName("settings")
 public class MainConfig extends AddonConfig {
 
@@ -29,26 +24,18 @@ public class MainConfig extends AddonConfig {
   @SwitchSetting
   private final ConfigProperty<Boolean> textReplacement = new ConfigProperty<>(true);
 
-  private ConfigProperty<HashMap<Integer, TextReplacement>> textReplacements = new ConfigProperty<>(new HashMap<>());
-  private ConfigProperty<HashMap<Integer, ChatListener>> chatListeners = new ConfigProperty<>(new HashMap<>());
+  @Exclude
+  private final ConfigProperty<List<TextReplacementEntry>> textReplacements = new ConfigProperty<>(new ArrayList<>());
 
-  public HashMap<Integer, TextReplacement> getTextReplacements() {
-    return this.textReplacements.get();
-  }
-  public HashMap<Integer, ChatListener> getChatListeners() {
-    return this.chatListeners.get();
-  }
+  @Exclude
+  private final ConfigProperty<List<ChatListenerEntry>> chatListeners = new ConfigProperty<>(new ArrayList<>());
 
-  @MethodOrder(after = "textReplacement")
-  @AddonActivitySetting
-  public Activity openTextReplacementActivity() {
-    return new TextReplacementActivity(CU.get());
+  public ConfigProperty<List<TextReplacementEntry>> getTextReplacements() {
+    return textReplacements;
   }
 
-  @MethodOrder(after = "chatListener")
-  @AddonActivitySetting
-  public Activity openChatListenerActivity() {
-    return new ChatListenerActivity(CU.get());
+  public ConfigProperty<List<ChatListenerEntry>> getChatListeners() {
+    return this.chatListeners;
   }
 
   @Override

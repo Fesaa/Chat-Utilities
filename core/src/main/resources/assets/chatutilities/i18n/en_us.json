@@ -12,7 +12,7 @@
           "description": "Example; 3/5 will send at max 3 chat responses per 5 minutes."
         },
         "maxFrequency": {
-          "name": "Max amount of chat responses in a timespan"
+          "name": "Max Messages"
         },
         "maxTimeSpan": {
           "name": "Timespan"
@@ -21,36 +21,117 @@
       "textReplacement" : {
         "name" : "Text Replacement"
       },
-      "openTextReplacementActivity" : {
-        "name" : "Edit text replacements"
-      },
-      "openChatListenerActivity": {
-        "name": "Edit chat listeners"
-      },
       "copy": {
         "name": "Copy Button"
       }
     },
-    "gui" : {
-      "textReplacement" : {
-        "manage" : {
-          "text" : "Text to replace",
-          "message" : "Message to replace with",
-          "enabled": "Enabled?",
-          "remove": "Delete this text replacement\nThis action is irreversible!"
-        }
+    "chatInput": {
+      "textreplacement": {
+        "name": "Text Replacements"
       },
-      "chatListener": {
-        "manage": {
-          "regex": "Regex to match",
-          "message": "Message to send in response",
-          "sound_id": "Sound to play on match",
-          "delay": "Delay",
-          "chat": "Chat?",
-          "command": "Command?",
-          "sound": "Sound?",
-          "enabled": "Enabled?",
-          "remove": "Delete this chat listener\nThis action is irreversible!"
+      "chatlisteners": {
+        "name": "Chat Listeners"
+      },
+      "tab": {
+        "textreplacement": {
+          "name": "Text Replacement",
+          "enabled": {
+            "name": "Enabled"
+          },
+          "displayName": {
+            "name": "Name"
+          },
+          "text": {
+            "name": "Text",
+            "description": "Text to replace"
+          },
+          "message": {
+            "name": "Message",
+            "description": "Message to replace with"
+          },
+          "serverConfig": {
+            "name": "Server Bound",
+            "enabled": {
+              "name": "Enabled"
+            },
+            "singlePlayer": {
+              "name": "Single Player"
+            },
+            "address": {
+              "name": "Server Adress"
+            }
+          }
+        },
+        "chatlistener": {
+          "name": "Chat Listener",
+          "enabled": {
+            "name": "Enabled"
+          },
+          "displayName": {
+            "name": "Name"
+          },
+          "useRegex": {
+            "name": "RegEx",
+            "description": "Use RegEx to match.\nMust otherwise match word for word.\nUse &1, &2, ...to use capture groups\nin your response. Be careful with RegEx!!"
+          },
+          "regex": {
+            "name": "Message",
+            "description": "The message to match"
+          },
+          "text": {
+            "name": "Response",
+            "description": "The text to send in response. "
+          },
+          "soundId": {
+            "name": "Sound ID",
+            "description": "Example: block.bell.resonate"
+          },
+          "delay": {
+            "name": "Delay",
+            "description": "Seconds to wait before responding"
+          },
+          "chat": {
+            "name": "Chat Message",
+            "description": "Send response as a chat message"
+          },
+          "command": {
+            "name": "Command",
+            "description": "Send response as a command"
+          },
+          "sound": {
+            "name": "Sound",
+            "description": "Play sound on match"
+          },
+          "serverConfig": {
+            "name": "Server Bound",
+            "enabled": {
+              "name": "Enabled"
+            },
+            "singlePlayer": {
+              "name": "Single Player"
+            },
+            "address": {
+              "name": "Server Adress"
+            }
+          }
+        }
+      }
+    }
+  },
+  "labymod": {
+    "chatInput": {
+      "textreplacement": {
+        "name": "Text Replacements"
+      },
+      "chatlisteners": {
+        "name": "Chat Listeners"
+      },
+      "tab": {
+        "chatlisteners": {
+          "name": "Chat Listeners"
+        },
+        "textreplacement": {
+          "name": "Text Replacements"
         }
       }
     }

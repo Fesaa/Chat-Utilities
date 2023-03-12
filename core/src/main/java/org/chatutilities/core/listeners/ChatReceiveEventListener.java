@@ -1,6 +1,9 @@
 package org.chatutilities.core.listeners;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -19,16 +22,18 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.chatutilities.core.CU;
 import org.chatutilities.core.config.ChatListenerSubConfig;
-import org.chatutilities.core.imp.ChatListener;
+import org.chatutilities.core.config.impl.ChatListenerEntry;
 
 public class ChatReceiveEventListener {
 
   private final CU addon;
 
+  private final HashMap<String, List<Long>> usage = new HashMap<>();
+
   public ChatReceiveEventListener(CU addon) {this.addon = addon;}
 
   @Subscribe
-  public void onChatReceiveEvent(ChatReceiveEvent chatReceiveEvent) {
+  public void onChatReceiveEvent(ChatReceiveEvent e) {
     if (!this.addon.configuration().getChatListenerSubConfig().isEnabled()
         || !this.addon.configuration().enabled().get()) {
       return;
@@ -39,23 +44,43 @@ public class ChatReceiveEventListener {
       return;
     }
 
-    for (ChatListener chatListener : this.addon.configuration().getChatListeners().values()) {
-      if (!chatListener.isEnabled()) {
+    for (ChatListenerEntry chatListener : this.addon.configuration().getChatListeners().get()) {
+      if (!chatListener.getEnabled().get()
+          || (chatListener.getServerConfig().enabled().get()
+          && chatListener.getServerConfig().notAllowedToBeUsed(
+          this.addon.labyAPI().serverController().getCurrentServerData()
+      ))) {
         continue;
       }
 
-      String msg = chatListener.getMsg();
-      Pattern pattern = this.addon.getPatternHashMap().get(chatListener.getID());
-      if (pattern == null) {
-        String name = p.getName();
-        pattern = Pattern.compile(chatListener.getRegex().replace("&player", name));
-        this.addon.getPatternHashMap().put(chatListener.getID(), pattern);
+      String msg = chatListener.getText().get();
+      String name = p.getName();
+      String regex = chatListener.getRegex().get().replace("&player", name);
+      if (chatListener.getUseRegex().get()) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(e.chatMessage().getPlainText());
+        if (!matcher.matches()) {
+          continue;
+        }
+
+        for (int i = 1; i <= matcher.groupCount(); i++) {
+          msg = msg.replace("&" + i, matcher.group(i));
+        }
+
+      } else {
+        this.addon.logger().info(e.chatMessage().getPlainText());
+        if (!e.chatMessage().getPlainText().equals(regex)) {
+          continue;
+        }
       }
 
-      Matcher matcher = pattern.matcher(chatReceiveEvent.chatMessage().getPlainText());
-      if (!matcher.matches()) {
-        continue;
+      String ID = chatListener.getDisplayName().get()
+          + chatListener.getRegex().get()
+          + chatListener.getText().get();
+      if (!this.usage.containsKey(ID)) {
+        this.usage.put(ID, new ArrayList<>());
       }
+
 
       // Anti Spam
       ChatListenerSubConfig chatListenerSubConfig = this.addon.configuration().getChatListenerSubConfig();
@@ -65,41 +90,36 @@ public class ChatReceiveEventListener {
         long now = (new Date()).getTime();
         int maxFrequency = chatListenerSubConfig.getMaxFrequency().get();
         int maxTimeSpan = chatListenerSubConfig.getMaxTimeSpan().get();
-        canUse = !chatListener.canUse(now, maxFrequency, maxTimeSpan);
-        chatListener.addUsage(now);
+        canUse = this.canUse(now, maxFrequency, maxTimeSpan, ID);
+        this.usage.get(ID).add(now);
       } else {
         canUse = true;
       }
 
-      for (int i = 1; i <= matcher.groupCount(); i++) {
-        msg = msg.replace("&" + i, matcher.group(i));
-      }
-
-      if (chatListener.isChat() && canUse) {
+      if (chatListener.getChat().get() && canUse) {
         smartSendWithDelay(chatListener, msg);
       }
 
-      if (chatListener.isCommand()) {
+      if (chatListener.getCommand().get()) {
         smartSendWithDelay(chatListener, "/" + msg);
       }
 
-      if (chatListener.isSound()) {
+      if (chatListener.getSound().get()) {
         MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
-        ResourceLocation sound = ResourceLocation.create("minecraft", chatListener.getSoundId());
-        if (chatListener.getDelay() > 0) {
+        ResourceLocation sound = ResourceLocation.create("minecraft", chatListener.getSoundId().get());
+        if (chatListener.getDelay().get() > 0) {
           Executors.newScheduledThreadPool(
               Runtime.getRuntime().availableProcessors()).schedule(
                   () -> minecraftSounds.playSound(sound, 100, 1),
-              chatListener.getDelay(), TimeUnit.MILLISECONDS);
+              chatListener.getDelay().get(), TimeUnit.MILLISECONDS);
         } else {
           minecraftSounds.playSound(sound, 100, 1);
         }
       }
-
     }
 
     if (this.addon.configuration().getCopy().get()) {
-      String msg = chatReceiveEvent.chatMessage().getPlainText();
+      String msg = e.chatMessage().getPlainText();
       if (msg.trim().equals("")) {
         return;
       }
@@ -121,7 +141,7 @@ public class ChatReceiveEventListener {
             TextDecoration.UNDERLINED)
         .build();
 
-      chatReceiveEvent.setMessage(chatReceiveEvent.message()
+      e.setMessage(e.message()
           .append(Component.text(" [").style(onlyWhiteColour))
           .append(Component.text("Copy").style(onlyGreenColour)
               .clickEvent(ClickEvent.copyToClipboard(msg))
@@ -132,16 +152,31 @@ public class ChatReceiveEventListener {
 
   }
 
-  private void smartSendWithDelay(ChatListener chatListener, String msg) {
+  private void smartSendWithDelay(ChatListenerEntry chatListener, String msg) {
     ChatExecutor chatExecutor = this.addon.labyAPI().minecraft().chatExecutor();
-    if (chatListener.getDelay() > 0) {
+    if (chatListener.getDelay().get() > 0) {
       Executors.newScheduledThreadPool(
           Runtime.getRuntime().availableProcessors()).schedule(
               () ->
                   chatExecutor.chat(msg, false),
-          chatListener.getDelay(), TimeUnit.MILLISECONDS);
+          chatListener.getDelay().get(), TimeUnit.MILLISECONDS);
     } else {
       chatExecutor.chat(msg, false);
     }
+  }
+
+  public boolean canUse(long now, int maxUses, int maxTime, String key) {
+    int c = 0;
+    for (Long useTime : this.usage.get(key)) {
+      if (now - useTime < maxTime * 1000 *  60L) {
+        c++;
+      }
+    }
+    if (c == 0) {
+      this.usage.get(key).clear();
+      return true;
+    }
+
+    return c < maxUses;
   }
 }

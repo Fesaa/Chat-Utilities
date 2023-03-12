@@ -1,0 +1,125 @@
+.content {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0 3 0 3;
+
+  .setting-header {
+    padding-top: 3;
+    padding-bottom: 0;
+    height: fit-content;
+    margin: 0;
+
+    .button {
+      alignment: right;
+      renderer: "Background";
+      height: 10;
+      width: 12;
+      padding: 0;
+      margin-top: 2;
+
+      Icon {
+        width: 8;
+        height: width;
+      }
+    }
+
+    .back-button {
+      Icon {
+        icon: sprite("common", 2, 4, 8);
+
+        &:hover {
+          color: #aa0000;
+        }
+      }
+    }
+
+    .add-button {
+      Icon {
+        &:hover {
+          color: #00aa00;
+        }
+      }
+    }
+
+    .title {
+      margin-top: 0;
+    }
+  }
+
+  .scroll {
+    padding: 1;
+    padding-top: 2;
+    padding-bottom: 3;
+
+    .list {
+      space-between-entries: 2;
+
+      Setting {
+        height: 14;
+        padding-right: 1;
+
+        .header {
+          .info {
+            height: 16 !important;
+            max-height: 16 !important;
+            min-height: 16 !important;
+
+            .status-indicator {
+              height: 16;
+            }
+
+            Component {
+              max-width: 100%;
+            }
+          }
+        }
+
+        .button {
+          width: 14;
+          height: width;
+          renderer: "Background";
+          opacity: 0.6;
+          padding: 0;
+          alignment: right;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+
+        .input-wrapper {
+          width: fit-content;
+
+          TextField {
+            border: 0 #ffffff;
+            background-color: rgba(120, 120, 120, 0.7);
+            text-shadow: false;
+
+            &:focus {
+              border: 0 #ffffff !important;
+              background-color: rgba(140, 140, 140, 0.8) !important;
+            }
+          }
+
+          Switch {
+            renderer: "ChatSwitch";
+            width: height;
+          }
+
+          Slider {
+            renderer: "ChatSlider";
+          }
+
+          ColorPicker {
+            width: height;
+            left: null;
+          }
+        }
+
+      }
+    }
+
+    Scrollbar {
+      width: 1;
+    }
+  }
+}
