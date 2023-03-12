@@ -71,8 +71,8 @@ public class ChatReceiveEventListener {
         canUse = true;
       }
 
-      for (int i = 1; i < matcher.groupCount(); i++) {
-        msg = msg.replace("&" + (i), matcher.group(i));
+      for (int i = 1; i <= matcher.groupCount(); i++) {
+        msg = msg.replace("&" + i, matcher.group(i));
       }
 
       if (chatListener.isChat() && canUse) {
