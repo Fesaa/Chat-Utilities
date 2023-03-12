@@ -5,12 +5,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import net.labymod.api.client.chat.ChatExecutor;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.event.ClickEvent;
 import net.labymod.api.client.component.event.HoverEvent;
 import net.labymod.api.client.component.format.NamedTextColor;
+import net.labymod.api.client.component.format.Style;
+import net.labymod.api.client.component.format.TextDecoration;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
+import net.labymod.api.client.resources.sound.MinecraftSounds;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.chatutilities.core.CU;
@@ -30,49 +34,48 @@ public class ChatReceiveEventListener {
       return;
     }
 
+    ClientPlayer p = this.addon.labyAPI().minecraft().getClientPlayer();
+    if (p == null) {
+      return;
+    }
+
     for (ChatListener chatListener : this.addon.configuration().getChatListeners().values()) {
       if (!chatListener.isEnabled()) {
         continue;
       }
 
       String msg = chatListener.getMsg();
-      Pattern pattern;
-      Matcher matcher;
-
-      if (this.addon.getPatternHashMap().containsKey(chatListener.getID())) {
-        pattern = this.addon.getPatternHashMap().get(chatListener.getID());
-      } else {
-        ClientPlayer p = this.addon.labyAPI().minecraft().getClientPlayer();
-
-        if (p == null) {
-          return;
-        }
-
+      Pattern pattern = this.addon.getPatternHashMap().get(chatListener.getID());
+      if (pattern == null) {
         String name = p.getName();
         pattern = Pattern.compile(chatListener.getRegex().replace("&player", name));
         this.addon.getPatternHashMap().put(chatListener.getID(), pattern);
       }
 
-      matcher = pattern.matcher(chatReceiveEvent.chatMessage().getPlainText());
-
+      Matcher matcher = pattern.matcher(chatReceiveEvent.chatMessage().getPlainText());
       if (!matcher.matches()) {
         continue;
       }
 
       // Anti Spam
-      long now = (new Date()).getTime();
       ChatListenerSubConfig chatListenerSubConfig = this.addon.configuration().getChatListenerSubConfig();
       boolean useAntiSpam = chatListenerSubConfig.getUseAntiSpam().get();
-      int maxFrequency = chatListenerSubConfig.getMaxFrequency().get();
-      int maxTimeSpan = chatListenerSubConfig.getMaxTimeSpan().get();
-      boolean canUse = !chatListener.canUse(now, maxFrequency, maxTimeSpan);
-      chatListener.addUsage(now);
-
-      for (int j = 0; j + 1 <= matcher.groupCount(); j++) {
-        msg = msg.replace("&" + (j+1), matcher.group(j+1));
+      boolean canUse;
+      if (useAntiSpam) {
+        long now = (new Date()).getTime();
+        int maxFrequency = chatListenerSubConfig.getMaxFrequency().get();
+        int maxTimeSpan = chatListenerSubConfig.getMaxTimeSpan().get();
+        canUse = !chatListener.canUse(now, maxFrequency, maxTimeSpan);
+        chatListener.addUsage(now);
+      } else {
+        canUse = true;
       }
 
-      if (chatListener.isChat() && (!useAntiSpam || canUse)) {
+      for (int i = 1; i < matcher.groupCount(); i++) {
+        msg = msg.replace("&" + (i), matcher.group(i));
+      }
+
+      if (chatListener.isChat() && canUse) {
         smartSendWithDelay(chatListener, msg);
       }
 
@@ -81,10 +84,15 @@ public class ChatReceiveEventListener {
       }
 
       if (chatListener.isSound()) {
+        MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
+        ResourceLocation sound = ResourceLocation.create("minecraft", chatListener.getSoundId());
         if (chatListener.getDelay() > 0) {
-          Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors()).schedule(() -> this.addon.labyAPI().minecraft().sounds().playSound(ResourceLocation.create("minecraft", chatListener.getSoundId()), 100, 1), chatListener.getDelay(), TimeUnit.MILLISECONDS);
+          Executors.newScheduledThreadPool(
+              Runtime.getRuntime().availableProcessors()).schedule(
+                  () -> minecraftSounds.playSound(sound, 100, 1),
+              chatListener.getDelay(), TimeUnit.MILLISECONDS);
         } else {
-          this.addon.labyAPI().minecraft().sounds().playSound(ResourceLocation.create("minecraft", chatListener.getSoundId()), 100, 1);
+          minecraftSounds.playSound(sound, 100, 1);
         }
       }
 
@@ -95,23 +103,45 @@ public class ChatReceiveEventListener {
       if (msg.trim().equals("")) {
         return;
       }
-      this.addon.logger().info(msg);
+
+    Style onlyWhiteColour = Style.builder()
+        .color(NamedTextColor.WHITE)
+        .undecorate(TextDecoration.STRIKETHROUGH,
+            TextDecoration.BOLD,
+            TextDecoration.ITALIC,
+            TextDecoration.OBFUSCATED,
+            TextDecoration.UNDERLINED)
+            .build();
+    Style onlyGreenColour = Style.builder()
+        .color(NamedTextColor.GREEN)
+        .undecorate(TextDecoration.STRIKETHROUGH,
+            TextDecoration.BOLD,
+            TextDecoration.ITALIC,
+            TextDecoration.OBFUSCATED,
+            TextDecoration.UNDERLINED)
+        .build();
+
       chatReceiveEvent.setMessage(chatReceiveEvent.message()
-          .append(Component.text(" [", NamedTextColor.WHITE))
-          .append(Component.text("Copy", NamedTextColor.GREEN)
+          .append(Component.text(" [").style(onlyWhiteColour))
+          .append(Component.text("Copy").style(onlyGreenColour)
               .clickEvent(ClickEvent.copyToClipboard(msg))
               .hoverEvent(HoverEvent.showText(Component.text("Click to copy."))))
-          .append(Component.text("]", NamedTextColor.WHITE))
+          .append(Component.text("]").style(onlyWhiteColour))
       );
     }
 
   }
 
   private void smartSendWithDelay(ChatListener chatListener, String msg) {
+    ChatExecutor chatExecutor = this.addon.labyAPI().minecraft().chatExecutor();
     if (chatListener.getDelay() > 0) {
-      Executors.newScheduledThreadPool(Runtime.getRuntime().availableProcessors()).schedule(() -> this.addon.labyAPI().minecraft().chatExecutor().chat(msg, false), chatListener.getDelay(), TimeUnit.MILLISECONDS);
+      Executors.newScheduledThreadPool(
+          Runtime.getRuntime().availableProcessors()).schedule(
+              () ->
+                  chatExecutor.chat(msg, false),
+          chatListener.getDelay(), TimeUnit.MILLISECONDS);
     } else {
-      this.addon.labyAPI().minecraft().chatExecutor().chat(msg, false);
+      chatExecutor.chat(msg, false);
     }
   }
 }

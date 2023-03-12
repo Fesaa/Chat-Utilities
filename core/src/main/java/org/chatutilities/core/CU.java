@@ -40,7 +40,7 @@ public class CU extends LabyAddon<MainConfig> {
   }
 
   public void populateHasMap() {
-    ClientPlayer p = this.labyAPI().minecraft().clientPlayer();
+    ClientPlayer p = this.labyAPI().minecraft().getClientPlayer();
     if (p == null) {
       return;
     }
