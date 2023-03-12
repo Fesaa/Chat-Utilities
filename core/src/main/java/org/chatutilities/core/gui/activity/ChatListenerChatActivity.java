@@ -1,5 +1,6 @@
 package org.chatutilities.core.gui.activity;
 
+import net.labymod.api.Laby;
 import net.labymod.api.Textures.SpriteCommon;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
@@ -22,6 +23,8 @@ import org.chatutilities.core.CU;
 import org.chatutilities.core.config.MainConfig;
 import org.chatutilities.core.config.impl.ChatListenerEntry;
 import org.jetbrains.annotations.NotNull;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 @Links({@Link("chatinput/settings.lss"), @Link("chatinput/entry.lss")})
 @AutoActivity
@@ -69,6 +72,18 @@ public class ChatListenerChatActivity extends ChatInputTabActivity<FlexibleConte
       buttonWrapper.addChild(iconWidget);
       buttonWrapper.setPressable(() -> {
         if (!this.editing.getDisplayName().get().isEmpty()) {
+
+          try {
+            Pattern.compile(this.editing.getRegex().get());
+          } catch (PatternSyntaxException e) {
+            Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(
+              Component.text("[", NamedTextColor.WHITE)
+                    .append(Component.text("CU", NamedTextColor.GREEN))
+                    .append(Component.text("]", NamedTextColor.WHITE))
+                    .append(Component.translatable("chatutilities.errors.invalidRegex", NamedTextColor.RED))
+            );
+            this.editing.getUseRegex().set(false);
+          }
           this.config.getChatListeners().get().remove(this.original == null ? this.editing : this.original);
           this.config.getChatListeners().get().add(this.editing);
           CU.get().saveConfiguration();

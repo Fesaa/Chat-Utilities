@@ -116,6 +116,9 @@
           }
         }
       }
+    },
+    "errors": {
+      "invalidRegex": " Regex has been disabled as your message contained invalid regex"
     }
   },
   "labymod": {

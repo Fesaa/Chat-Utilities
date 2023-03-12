@@ -8,6 +8,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import net.labymod.api.client.chat.ChatExecutor;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.event.ClickEvent;
@@ -57,7 +58,12 @@ public class ChatReceiveEventListener {
       String name = p.getName();
       String regex = chatListener.getRegex().get().replace("&player", name);
       if (chatListener.getUseRegex().get()) {
-        Pattern pattern = Pattern.compile(regex);
+        Pattern pattern;
+        try {
+         pattern = Pattern.compile(regex);
+        } catch (PatternSyntaxException patternSyntaxException) {
+          continue;
+        }
         Matcher matcher = pattern.matcher(e.chatMessage().getPlainText());
         if (!matcher.matches()) {
           continue;
@@ -68,7 +74,6 @@ public class ChatReceiveEventListener {
         }
 
       } else {
-        this.addon.logger().info(e.chatMessage().getPlainText());
         if (!e.chatMessage().getPlainText().equals(regex)) {
           continue;
         }
@@ -96,15 +101,15 @@ public class ChatReceiveEventListener {
         canUse = true;
       }
 
-      if (chatListener.getChat().get() && canUse) {
+      if (chatListener.getChat().get() && !chatListener.getText().isDefaultValue() && canUse) {
         smartSendWithDelay(chatListener, msg);
       }
 
-      if (chatListener.getCommand().get()) {
+      if (chatListener.getCommand().get() && !chatListener.getText().isDefaultValue()) {
         smartSendWithDelay(chatListener, "/" + msg);
       }
 
-      if (chatListener.getSound().get()) {
+      if (chatListener.getSound().get() && !chatListener.getSoundId().isDefaultValue()) {
         MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
         ResourceLocation sound = ResourceLocation.create("minecraft", chatListener.getSoundId().get());
         if (chatListener.getDelay().get() > 0) {
