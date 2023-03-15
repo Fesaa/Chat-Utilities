@@ -1,5 +1,7 @@
 package org.chatutilities.core.gui.activity;
 
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import net.labymod.api.Laby;
 import net.labymod.api.Textures.SpriteCommon;
 import net.labymod.api.client.component.Component;
@@ -7,9 +9,9 @@ import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.activity.AutoActivity;
 import net.labymod.api.client.gui.screen.activity.Link;
-import net.labymod.api.client.gui.screen.activity.Links;
 import net.labymod.api.client.gui.screen.activity.activities.labymod.child.SettingContentActivity;
 import net.labymod.api.client.gui.screen.activity.activities.labymod.child.SettingContentActivity.HeaderType;
+import net.labymod.api.client.gui.screen.activity.types.chatinput.ChatInputTabSettingActivity;
 import net.labymod.api.client.gui.screen.widget.AbstractWidget;
 import net.labymod.api.client.gui.screen.widget.Widget;
 import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
@@ -23,12 +25,10 @@ import org.chatutilities.core.CU;
 import org.chatutilities.core.config.MainConfig;
 import org.chatutilities.core.config.impl.ChatListenerEntry;
 import org.jetbrains.annotations.NotNull;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
-@Links({@Link("chatinput/settings.lss"), @Link("chatinput/entry.lss")})
+@Link("chatinput/entry.lss")
 @AutoActivity
-public class ChatListenerChatActivity extends ChatInputTabActivity<FlexibleContentWidget> {
+public class ChatListenerChatActivity extends ChatInputTabSettingActivity<FlexibleContentWidget> {
 
   private ChatListenerEntry original;
   private ChatListenerEntry editing;

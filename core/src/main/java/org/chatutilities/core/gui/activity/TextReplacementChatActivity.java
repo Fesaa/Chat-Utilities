@@ -6,9 +6,9 @@ import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.activity.AutoActivity;
 import net.labymod.api.client.gui.screen.activity.Link;
-import net.labymod.api.client.gui.screen.activity.Links;
 import net.labymod.api.client.gui.screen.activity.activities.labymod.child.SettingContentActivity;
 import net.labymod.api.client.gui.screen.activity.activities.labymod.child.SettingContentActivity.HeaderType;
+import net.labymod.api.client.gui.screen.activity.types.chatinput.ChatInputTabSettingActivity;
 import net.labymod.api.client.gui.screen.widget.AbstractWidget;
 import net.labymod.api.client.gui.screen.widget.Widget;
 import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
@@ -23,9 +23,9 @@ import org.chatutilities.core.config.MainConfig;
 import org.chatutilities.core.config.impl.TextReplacementEntry;
 import org.jetbrains.annotations.NotNull;
 
-@Links({@Link("chatinput/settings.lss"), @Link("chatinput/entry.lss")})
+@Link("chatinput/entry.lss")
 @AutoActivity
-public class TextReplacementChatActivity extends ChatInputTabActivity<FlexibleContentWidget> {
+public class TextReplacementChatActivity extends ChatInputTabSettingActivity<FlexibleContentWidget> {
 
   private TextReplacementEntry original;
   private TextReplacementEntry editing;
