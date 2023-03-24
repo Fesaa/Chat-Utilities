@@ -74,16 +74,18 @@ public class ChatListenerChatActivity extends ChatInputTabSettingActivity<Flexib
       buttonWrapper.setPressable(() -> {
         if (!this.editing.getDisplayName().get().isEmpty()) {
 
-          try {
-            Pattern.compile(this.editing.getRegex().get());
-          } catch (PatternSyntaxException e) {
-            Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(
-              Component.text("[", NamedTextColor.WHITE)
-                    .append(Component.text("CU", NamedTextColor.GREEN))
-                    .append(Component.text("]", NamedTextColor.WHITE))
-                    .append(Component.translatable("chatutilities.errors.invalidRegex", NamedTextColor.RED))
-            );
-            this.editing.getMatchType().set(MatchType.EQUALS);
+          if (this.editing.getMatchType().equals(MatchType.REGEX)) {
+            try {
+              Pattern.compile(this.editing.getRegex().get());
+            } catch (PatternSyntaxException e) {
+              Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(
+                  Component.text("[", NamedTextColor.WHITE)
+                      .append(Component.text("CU", NamedTextColor.GREEN))
+                      .append(Component.text("]", NamedTextColor.WHITE))
+                      .append(Component.translatable("chatutilities.errors.invalidRegex", NamedTextColor.RED))
+              );
+              this.editing.getMatchType().set(MatchType.EQUALS);
+            }
           }
           this.config.getChatListeners().get().remove(this.original == null ? this.editing : this.original);
           this.config.getChatListeners().get().add(this.editing);
