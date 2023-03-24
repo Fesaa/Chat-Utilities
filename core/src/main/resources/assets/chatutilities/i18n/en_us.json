@@ -119,7 +119,7 @@
       }
     },
     "errors": {
-      "invalidRegex": " Regex has been disabled as your message contained invalid regex"
+      "invalidRegex": " The Chat Listener has been disabled as your message contained invalid regex"
     }
   },
   "labymod": {

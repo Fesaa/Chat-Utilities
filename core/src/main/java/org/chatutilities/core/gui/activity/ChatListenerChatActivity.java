@@ -74,7 +74,7 @@ public class ChatListenerChatActivity extends ChatInputTabSettingActivity<Flexib
       buttonWrapper.setPressable(() -> {
         if (!this.editing.getDisplayName().get().isEmpty()) {
 
-          if (this.editing.getMatchType().equals(MatchType.REGEX)) {
+          if (this.editing.getMatchType().get().equals(MatchType.REGEX)) {
             try {
               Pattern.compile(this.editing.getRegex().get());
             } catch (PatternSyntaxException e) {
@@ -84,7 +84,7 @@ public class ChatListenerChatActivity extends ChatInputTabSettingActivity<Flexib
                       .append(Component.text("]", NamedTextColor.WHITE))
                       .append(Component.translatable("chatutilities.errors.invalidRegex", NamedTextColor.RED))
               );
-              this.editing.getMatchType().set(MatchType.EQUALS);
+              this.editing.getEnabled().set(false);
             }
           }
           this.config.getChatListeners().get().remove(this.original == null ? this.editing : this.original);
