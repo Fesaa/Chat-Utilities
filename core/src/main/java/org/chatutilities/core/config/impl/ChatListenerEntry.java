@@ -27,8 +27,7 @@ public class ChatListenerEntry extends Config {
   @TextFieldSetting
   private final ConfigProperty<String> text = new ConfigProperty<>("");
 
-  @TextFieldSetting
-  private final ConfigProperty<String> soundId = new ConfigProperty<>("");
+  private SoundConfig soundConfig = new SoundConfig();
 
   @SliderSetting(min = 0, max = 10)
   private final ConfigProperty<Integer> delay = new ConfigProperty<>(0);
@@ -45,7 +44,7 @@ public class ChatListenerEntry extends Config {
       ReplyType replyType,
       String regex,
       String text,
-      String soundId,
+      SoundConfig soundConfig,
       int delay,
       ServerConfig serverConfig
   ) {
@@ -55,7 +54,7 @@ public class ChatListenerEntry extends Config {
     this.replyType.set(replyType);
     this.regex.set(regex);
     this.text.set(text);
-    this.soundId.set(soundId);
+    this.soundConfig = soundConfig;
     this.delay.set(delay);
     this.serverConfig = serverConfig;
   }
@@ -88,8 +87,8 @@ public class ChatListenerEntry extends Config {
     return regex;
   }
 
-  public ConfigProperty<String> getSoundId() {
-    return soundId;
+  public SoundConfig getSoundConfig() {
+    return soundConfig;
   }
 
 
@@ -105,7 +104,7 @@ public class ChatListenerEntry extends Config {
         this.replyType.get(),
         this.regex.get(),
         this.text.get(),
-        this.soundId.get(),
+        this.soundConfig,
         this.delay.get(),
         this.serverConfig
     );

@@ -86,9 +86,18 @@
             "name": "Response",
             "description": "The text to send in response. "
           },
-          "soundId": {
-            "name": "Sound ID",
-            "description": "Example: block.bell.resonate"
+          "soundConfig": {
+            "name": "Sound",
+            "soundId": {
+              "name": "Sound ID",
+              "description": "Example: block.bell.resonate"
+            },
+            "volume": {
+              "name": "Volume"
+            },
+            "pitch": {
+              "name": "Pitch"
+            }
           },
           "delay": {
             "name": "Delay",

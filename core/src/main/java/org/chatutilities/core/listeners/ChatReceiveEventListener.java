@@ -26,6 +26,7 @@ import org.chatutilities.core.config.ChatListenerSubConfig;
 import org.chatutilities.core.config.impl.ChatListenerEntry;
 import org.chatutilities.core.config.impl.ChatListenerEntry.MatchType;
 import org.chatutilities.core.config.impl.ChatListenerEntry.ReplyType;
+import org.chatutilities.core.config.impl.SoundConfig;
 
 public class ChatReceiveEventListener {
 
@@ -117,15 +118,16 @@ public class ChatReceiveEventListener {
       }
 
       if (chatListener.getReplyType().get().equals(ReplyType.SOUND)) {
+        SoundConfig soundConfig = chatListener.getSoundConfig();
         MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
-        ResourceLocation sound = ResourceLocation.create("minecraft", chatListener.getSoundId().get());
+        ResourceLocation sound = ResourceLocation.create("minecraft", soundConfig.getSoundId().get());
         if (chatListener.getDelay().get() > 0) {
           Executors.newScheduledThreadPool(
               Runtime.getRuntime().availableProcessors()).schedule(
-              () -> minecraftSounds.playSound(sound, 100, 1),
+              () -> minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get()),
               chatListener.getDelay().get(), TimeUnit.MILLISECONDS);
         } else {
-          minecraftSounds.playSound(sound, 100, 1);
+          minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get());
         }
       }
     }
