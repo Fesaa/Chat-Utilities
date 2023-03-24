@@ -70,9 +70,13 @@
           "displayName": {
             "name": "Name"
           },
-          "useRegex": {
-            "name": "RegEx",
-            "description": "Use RegEx to match.\nMust otherwise match word for word.\nUse &1, &2, ...to use capture groups\nin your response. Be careful with RegEx!!"
+          "matchType": {
+            "name": "Match",
+            "description": "Select how you would like your message to be matched to incoming messages."
+          },
+          "replyType": {
+            "name": "Reply",
+            "description": "Select how you would reply if a message matches"
           },
           "regex": {
             "name": "Message",
@@ -89,18 +93,6 @@
           "delay": {
             "name": "Delay",
             "description": "Seconds to wait before responding"
-          },
-          "chat": {
-            "name": "Chat Message",
-            "description": "Send response as a chat message"
-          },
-          "command": {
-            "name": "Command",
-            "description": "Send response as a command"
-          },
-          "sound": {
-            "name": "Sound",
-            "description": "Play sound on match"
           },
           "serverConfig": {
             "name": "Server Bound",

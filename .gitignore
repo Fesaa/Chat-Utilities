@@ -140,3 +140,4 @@ build-data.txt
 
 .DS_Store
 gradle.properties
+.assetsroot

@@ -24,6 +24,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.renderer.ScreenRendererW
 import org.chatutilities.core.CU;
 import org.chatutilities.core.config.MainConfig;
 import org.chatutilities.core.config.impl.ChatListenerEntry;
+import org.chatutilities.core.config.impl.ChatListenerEntry.MatchType;
 import org.jetbrains.annotations.NotNull;
 
 @Link("chatinput/entry.lss")
@@ -82,7 +83,7 @@ public class ChatListenerChatActivity extends ChatInputTabSettingActivity<Flexib
                     .append(Component.text("]", NamedTextColor.WHITE))
                     .append(Component.translatable("chatutilities.errors.invalidRegex", NamedTextColor.RED))
             );
-            this.editing.getUseRegex().set(false);
+            this.editing.getMatchType().set(MatchType.EQUALS);
           }
           this.config.getChatListeners().get().remove(this.original == null ? this.editing : this.original);
           this.config.getChatListeners().get().add(this.editing);

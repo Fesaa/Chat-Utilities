@@ -24,6 +24,8 @@ import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import org.chatutilities.core.CU;
 import org.chatutilities.core.config.ChatListenerSubConfig;
 import org.chatutilities.core.config.impl.ChatListenerEntry;
+import org.chatutilities.core.config.impl.ChatListenerEntry.MatchType;
+import org.chatutilities.core.config.impl.ChatListenerEntry.ReplyType;
 
 public class ChatReceiveEventListener {
 
@@ -57,10 +59,11 @@ public class ChatReceiveEventListener {
       String msg = chatListener.getText().get();
       String name = p.getName();
       String regex = chatListener.getRegex().get().replace("&player", name);
-      if (chatListener.getUseRegex().get()) {
+
+      if (chatListener.getMatchType().get().equals(MatchType.REGEX)) {
         Pattern pattern;
         try {
-         pattern = Pattern.compile(regex);
+          pattern = Pattern.compile(regex);
         } catch (PatternSyntaxException patternSyntaxException) {
           continue;
         }
@@ -72,20 +75,24 @@ public class ChatReceiveEventListener {
         for (int i = 1; i <= matcher.groupCount(); i++) {
           msg = msg.replace("&" + i, matcher.group(i));
         }
+      }
 
-      } else {
+      if (chatListener.getMatchType().get().equals(MatchType.EQUALS)) {
         if (!e.chatMessage().getPlainText().equals(regex)) {
           continue;
         }
       }
 
-      String ID = chatListener.getDisplayName().get()
-          + chatListener.getRegex().get()
-          + chatListener.getText().get();
+      if (chatListener.getMatchType().get().equals(MatchType.CONTAINS)) {
+        if (!e.chatMessage().getPlainText().contains(regex)) {
+          continue;
+        }
+      }
+
+      String ID = chatListener.getDisplayName().get() + chatListener.getRegex().get() + chatListener.getText().get();
       if (!this.usage.containsKey(ID)) {
         this.usage.put(ID, new ArrayList<>());
       }
-
 
       // Anti Spam
       ChatListenerSubConfig chatListenerSubConfig = this.addon.configuration().getChatListenerSubConfig();
@@ -101,21 +108,21 @@ public class ChatReceiveEventListener {
         canUse = true;
       }
 
-      if (chatListener.getChat().get() && !chatListener.getText().isDefaultValue() && canUse) {
+      if (chatListener.getReplyType().get().equals(ReplyType.CHAT) && !chatListener.getText().isDefaultValue() && canUse) {
         smartSendWithDelay(chatListener, msg);
       }
 
-      if (chatListener.getCommand().get() && !chatListener.getText().isDefaultValue()) {
+      if (chatListener.getReplyType().get().equals(ReplyType.COMMAND) && !chatListener.getText().isDefaultValue() ) {
         smartSendWithDelay(chatListener, "/" + msg);
       }
 
-      if (chatListener.getSound().get() && !chatListener.getSoundId().isDefaultValue()) {
+      if (chatListener.getReplyType().get().equals(ReplyType.SOUND)) {
         MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
         ResourceLocation sound = ResourceLocation.create("minecraft", chatListener.getSoundId().get());
         if (chatListener.getDelay().get() > 0) {
           Executors.newScheduledThreadPool(
               Runtime.getRuntime().availableProcessors()).schedule(
-                  () -> minecraftSounds.playSound(sound, 100, 1),
+              () -> minecraftSounds.playSound(sound, 100, 1),
               chatListener.getDelay().get(), TimeUnit.MILLISECONDS);
         } else {
           minecraftSounds.playSound(sound, 100, 1);
