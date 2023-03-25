@@ -117,7 +117,7 @@ public class ChatReceiveEventListener {
         smartSendWithDelay(chatListener, "/" + msg);
       }
 
-      if (chatListener.getReplyType().get().equals(ReplyType.SOUND)) {
+      if (chatListener.getSoundConfig().getEnabled().get()) {
         SoundConfig soundConfig = chatListener.getSoundConfig();
         MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
         ResourceLocation sound = ResourceLocation.create("minecraft", soundConfig.getSoundId().get());

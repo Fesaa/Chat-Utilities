@@ -119,7 +119,7 @@ public class ChatListenerEntry extends Config {
   public enum ReplyType {
     CHAT,
     COMMAND,
-    SOUND
+    NONE
   }
 
 }
