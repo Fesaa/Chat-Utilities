@@ -73,8 +73,8 @@ public class TextReplacementEntry extends Config {
     return new TextReplacementEntry(
         this.enabled.get(),
         this.displayName.get(),
-        this.message.get(),
         this.text.get(),
+        this.message.get(),
         this.serverConfig.copy()
     );
   }
