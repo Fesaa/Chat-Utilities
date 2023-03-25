@@ -18,9 +18,6 @@ public class ChatListenerEntry extends Config {
   @DropdownSetting
   private final ConfigProperty<MatchType> matchType = new ConfigProperty<>(MatchType.EQUALS);
 
-  @DropdownSetting
-  private final ConfigProperty<ReplyType> replyType = new ConfigProperty<>(ReplyType.CHAT);
-
   @TextFieldSetting
   private final ConfigProperty<String> regex = new ConfigProperty<>("");
 
@@ -29,8 +26,8 @@ public class ChatListenerEntry extends Config {
 
   private SoundConfig soundConfig = new SoundConfig();
 
-  @SliderSetting(min = 0, max = 10)
-  private final ConfigProperty<Integer> delay = new ConfigProperty<>(0);
+  @SliderSetting(min = 0, max = 10, steps = 0.1F)
+  private final ConfigProperty<Float> delay = new ConfigProperty<>(0F);
 
   private ServerConfig serverConfig = new ServerConfig();
 
@@ -41,17 +38,15 @@ public class ChatListenerEntry extends Config {
       boolean enabled,
       String displayName,
       MatchType matchType,
-      ReplyType replyType,
       String regex,
       String text,
       SoundConfig soundConfig,
-      int delay,
+      float delay,
       ServerConfig serverConfig
   ) {
     this.enabled.set(enabled);
     this.displayName.set(displayName);
     this.matchType.set(matchType);
-    this.replyType.set(replyType);
     this.regex.set(regex);
     this.text.set(text);
     this.soundConfig = soundConfig;
@@ -67,15 +62,11 @@ public class ChatListenerEntry extends Config {
     return matchType;
   }
 
-  public ConfigProperty<ReplyType> getReplyType() {
-    return replyType;
-  }
-
   public ConfigProperty<String> getText() {
     return text;
   }
 
-  public ConfigProperty<Integer> getDelay() {
+  public ConfigProperty<Float> getDelay() {
     return delay;
   }
 
@@ -101,7 +92,6 @@ public class ChatListenerEntry extends Config {
         this.enabled.get(),
         this.displayName.get(),
         this.matchType.get(),
-        this.replyType.get(),
         this.regex.get(),
         this.text.get(),
         this.soundConfig,
@@ -114,12 +104,6 @@ public class ChatListenerEntry extends Config {
     EQUALS,
     CONTAINS,
     REGEX
-  }
-
-  public enum ReplyType {
-    CHAT,
-    COMMAND,
-    NONE
   }
 
 }

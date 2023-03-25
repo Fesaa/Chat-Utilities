@@ -25,7 +25,6 @@ import org.chatutilities.core.CU;
 import org.chatutilities.core.config.ChatListenerSubConfig;
 import org.chatutilities.core.config.impl.ChatListenerEntry;
 import org.chatutilities.core.config.impl.ChatListenerEntry.MatchType;
-import org.chatutilities.core.config.impl.ChatListenerEntry.ReplyType;
 import org.chatutilities.core.config.impl.SoundConfig;
 
 public class ChatReceiveEventListener {
@@ -109,12 +108,8 @@ public class ChatReceiveEventListener {
         canUse = true;
       }
 
-      if (chatListener.getReplyType().get().equals(ReplyType.CHAT) && !chatListener.getText().isDefaultValue() && canUse) {
+      if (!chatListener.getText().isDefaultValue() && canUse) {
         smartSendWithDelay(chatListener, msg);
-      }
-
-      if (chatListener.getReplyType().get().equals(ReplyType.COMMAND) && !chatListener.getText().isDefaultValue() ) {
-        smartSendWithDelay(chatListener, "/" + msg);
       }
 
       if (chatListener.getSoundConfig().getEnabled().get()) {
@@ -125,7 +120,7 @@ public class ChatReceiveEventListener {
           Executors.newScheduledThreadPool(
               Runtime.getRuntime().availableProcessors()).schedule(
               () -> minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get()),
-              chatListener.getDelay().get(), TimeUnit.MILLISECONDS);
+              (int) (chatListener.getDelay().get() * 1000), TimeUnit.MILLISECONDS);
         } else {
           minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get());
         }
@@ -173,7 +168,7 @@ public class ChatReceiveEventListener {
           Runtime.getRuntime().availableProcessors()).schedule(
               () ->
                   chatExecutor.chat(msg, false),
-          chatListener.getDelay().get(), TimeUnit.MILLISECONDS);
+          (int) (chatListener.getDelay().get() * 1000), TimeUnit.MILLISECONDS);
     } else {
       chatExecutor.chat(msg, false);
     }
