@@ -5,12 +5,13 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.Switc
 import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.TextFieldSetting;
 import net.labymod.api.client.network.server.ServerData;
 import net.labymod.api.configuration.loader.Config;
+import net.labymod.api.configuration.loader.annotation.ParentSwitch;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingRequires;
 
 public class ServerConfig extends Config {
 
-  @SwitchSetting
+  @ParentSwitch
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(false);
 
   @SwitchSetting
@@ -52,7 +53,7 @@ public class ServerConfig extends Config {
     }
 
     if (Laby.labyAPI().minecraft().isSingleplayer()) {
-      return this.singlePlayer.get();
+      return !this.singlePlayer.get();
     }
 
     if (data == null) {
