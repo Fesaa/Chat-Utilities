@@ -17,10 +17,8 @@ if need be just ask on discord. :)
 
 Anything new that doesn't fit. Make a new directory 
 #### Setup project
-Be sure to read the [Laby Guide](https://wiki.labymod.net/pages/addon/) on how to make addons and setup the workspace.
+Be sure to read the [Laby Guide](https://wiki.labymod.net/pages/addon/) on how to make addons and set up the workspace.
 Quickly, you should just be able to open it in IntelliJ, add your own Beta Token in `gradle.properties`.
 And run the build task to get everything working.
-
-*If you figure out how to add `gradle.properties` to the `.gitignore` with it actually working PLEASE make a PR or tell me how*
 
 Love you all <3 owo (✿◠‿◠)
