@@ -29,6 +29,8 @@ public class ChatListenerEntry extends Config {
   @SliderSetting(min = 0, max = 10, steps = 0.1F)
   private final ConfigProperty<Float> delay = new ConfigProperty<>(0F);
 
+  private BlackListConfig blackListConfig = new BlackListConfig();
+
   private ServerConfig serverConfig = new ServerConfig();
 
   public ChatListenerEntry() {
@@ -42,6 +44,7 @@ public class ChatListenerEntry extends Config {
       String text,
       SoundConfig soundConfig,
       float delay,
+      BlackListConfig blackListConfig,
       ServerConfig serverConfig
   ) {
     this.enabled.set(enabled);
@@ -51,6 +54,7 @@ public class ChatListenerEntry extends Config {
     this.text.set(text);
     this.soundConfig = soundConfig;
     this.delay.set(delay);
+    this.blackListConfig = blackListConfig;
     this.serverConfig = serverConfig;
   }
 
@@ -78,6 +82,10 @@ public class ChatListenerEntry extends Config {
     return regex;
   }
 
+  public BlackListConfig getBlackListConfig() {
+    return blackListConfig;
+  }
+
   public SoundConfig getSoundConfig() {
     return soundConfig;
   }
@@ -96,6 +104,7 @@ public class ChatListenerEntry extends Config {
         this.text.get(),
         this.soundConfig,
         this.delay.get(),
+        this.blackListConfig,
         this.serverConfig
     );
   }

@@ -57,6 +57,11 @@ public class ChatReceiveEventListener {
       }
 
       String msg = chatListener.getText().get();
+
+      if (chatListener.getBlackListConfig().isBlockedByBlackList(e.chatMessage().getPlainText())) {
+        continue;
+      }
+
       String name = p.getName();
       String regex = chatListener.getRegex().get().replace("&player", name);
 

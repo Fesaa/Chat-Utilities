@@ -58,7 +58,7 @@
               "name": "Single Player"
             },
             "address": {
-              "name": "Server Adress"
+              "name": "Server Address"
             }
           }
         },
@@ -99,6 +99,25 @@
             "name": "Delay",
             "description": "Seconds to wait before responding"
           },
+          "blackListConfig": {
+            "name": "Black list",
+            "description": "The Chat Listener will not fire if at least one of the set words is contained in the message.",
+            "wordOne": {
+              "name": "#1"
+            },
+            "wordTwo": {
+              "name": "#2"
+            },
+            "wordThree": {
+              "name": "#3"
+            },
+            "wordFour": {
+              "name": "#4"
+            },
+            "wordFive": {
+              "name": "#5"
+            }
+          },
           "serverConfig": {
             "name": "Server Bound",
             "enabled": {
@@ -108,7 +127,7 @@
               "name": "Single Player"
             },
             "address": {
-              "name": "Server Adress"
+              "name": "Server Address"
             }
           }
         }
