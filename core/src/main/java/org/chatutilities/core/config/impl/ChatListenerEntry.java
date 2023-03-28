@@ -112,7 +112,8 @@ public class ChatListenerEntry extends Config {
   public enum MatchType {
     EQUALS,
     CONTAINS,
-    REGEX
+    REGEX,
+    SIMPLIFIED_REGEX
   }
 
 }

@@ -1,6 +1,7 @@
 package org.chatutilities.core.listeners;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,8 @@ public class ChatReceiveEventListener {
 
   public ChatReceiveEventListener(CU addon) {this.addon = addon;}
 
+  private final List<String> regexReplaceChars = Arrays.asList("\\", ")", "(", "[", "]", "+", ".", "^", "?", "{", "}", "$", "|");
+
   @Subscribe
   public void onChatReceiveEvent(ChatReceiveEvent e) {
     if (!this.addon.configuration().getChatListenerSubConfig().isEnabled()
@@ -63,12 +66,23 @@ public class ChatReceiveEventListener {
       }
 
       String name = p.getName();
-      String regex = chatListener.getRegex().get().replace("&player", name);
+      String matchMessage = chatListener.getRegex().get().replace("&player", name);
 
-      if (chatListener.getMatchType().get().equals(MatchType.REGEX)) {
+      MatchType matchType = chatListener.getMatchType().get();
+
+      if (matchType.equals(MatchType.SIMPLIFIED_REGEX)) {
+        for (String regexChar : this.regexReplaceChars) {
+          matchMessage = matchMessage.replace(regexChar, "\\" + regexChar);
+        }
+        matchMessage = matchMessage.replace("*", ".*");
+        matchMessage = matchMessage.replace("%", "(.*)");
+        matchType = MatchType.REGEX;
+      }
+
+      if (matchType.equals(MatchType.REGEX)) {
         Pattern pattern;
         try {
-          pattern = Pattern.compile(regex);
+          pattern = Pattern.compile(matchMessage);
         } catch (PatternSyntaxException patternSyntaxException) {
           continue;
         }
@@ -78,18 +92,18 @@ public class ChatReceiveEventListener {
         }
 
         for (int i = 1; i <= matcher.groupCount(); i++) {
-          msg = msg.replace("&" + i, matcher.group(i));
+          msg = msg.replace("%" + i, matcher.group(i));
         }
       }
 
-      if (chatListener.getMatchType().get().equals(MatchType.EQUALS)) {
-        if (!e.chatMessage().getPlainText().equals(regex)) {
+      if (matchType.equals(MatchType.EQUALS)) {
+        if (!e.chatMessage().getPlainText().equals(matchMessage)) {
           continue;
         }
       }
 
-      if (chatListener.getMatchType().get().equals(MatchType.CONTAINS)) {
-        if (!e.chatMessage().getPlainText().contains(regex)) {
+      if (matchType.equals(MatchType.CONTAINS)) {
+        if (!e.chatMessage().getPlainText().contains(matchMessage)) {
           continue;
         }
       }

@@ -72,7 +72,13 @@
           },
           "matchType": {
             "name": "Match",
-            "description": "Select how you would like your message to be matched to incoming messages."
+            "description": "Select how you would like your message to be matched to incoming messages.",
+            "entries": {
+              "equals": "Equals",
+              "contains": "Contains",
+              "regex": "RegEx",
+              "simplifiedRegex": "Simplified Regex"
+            }
           },
           "regex": {
             "name": "Message",
