@@ -33,6 +33,22 @@ public class ChatReceiveEventListener {
   private final CU addon;
 
   private final HashMap<String, List<Long>> usage = new HashMap<>();
+  private final Style onlyWhiteColour = Style.builder()
+      .color(NamedTextColor.WHITE)
+      .undecorate(TextDecoration.STRIKETHROUGH,
+          TextDecoration.BOLD,
+          TextDecoration.ITALIC,
+          TextDecoration.OBFUSCATED,
+          TextDecoration.UNDERLINED)
+      .build();
+  private final Style onlyGreenColour = Style.builder()
+      .color(NamedTextColor.GREEN)
+      .undecorate(TextDecoration.STRIKETHROUGH,
+          TextDecoration.BOLD,
+          TextDecoration.ITALIC,
+          TextDecoration.OBFUSCATED,
+          TextDecoration.UNDERLINED)
+      .build();
 
   public ChatReceiveEventListener(CU addon) {this.addon = addon;}
 
@@ -152,26 +168,9 @@ public class ChatReceiveEventListener {
         return;
       }
 
-    Style onlyWhiteColour = Style.builder()
-        .color(NamedTextColor.WHITE)
-        .undecorate(TextDecoration.STRIKETHROUGH,
-            TextDecoration.BOLD,
-            TextDecoration.ITALIC,
-            TextDecoration.OBFUSCATED,
-            TextDecoration.UNDERLINED)
-            .build();
-    Style onlyGreenColour = Style.builder()
-        .color(NamedTextColor.GREEN)
-        .undecorate(TextDecoration.STRIKETHROUGH,
-            TextDecoration.BOLD,
-            TextDecoration.ITALIC,
-            TextDecoration.OBFUSCATED,
-            TextDecoration.UNDERLINED)
-        .build();
-
       e.setMessage(e.message()
-          .append(Component.text(" [").style(onlyWhiteColour))
-          .append(Component.text("Copy").style(onlyGreenColour)
+          .append(Component.text(" [").style(this.onlyWhiteColour))
+          .append(Component.text("Copy").style(this.onlyGreenColour)
               .clickEvent(ClickEvent.copyToClipboard(msg))
               .hoverEvent(HoverEvent.showText(Component.text("Click to copy."))))
           .append(Component.text("]").style(onlyWhiteColour))
