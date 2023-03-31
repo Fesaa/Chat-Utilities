@@ -1,5 +1,7 @@
 package org.chatutilities.core.gui.activity;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import net.labymod.api.Textures.SpriteCommon;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
@@ -88,7 +90,9 @@ public class TextReplacementChatActivity extends ChatInputTabSettingActivity<Fle
       VerticalListWidget<Widget> list = new VerticalListWidget<>();
       list.addId("entries");
 
-      for (TextReplacementEntry entry : this.config.getTextReplacements().get()) {
+      TextReplacementEntry[] textReplacementEntries = this.config.getTextReplacements().get().toArray(new TextReplacementEntry[0]);
+      Arrays.sort(textReplacementEntries, new SortByDisplayName());
+      for (TextReplacementEntry entry : textReplacementEntries) {
         list.addChild(this.createEntry(entry));
       }
       ScrollWidget scrollWidget = new ScrollWidget(list);
@@ -134,5 +138,12 @@ public class TextReplacementChatActivity extends ChatInputTabSettingActivity<Fle
       this.reload();
     });
     return list;
+  }
+
+  private static class SortByDisplayName implements Comparator<TextReplacementEntry> {
+    @Override
+    public int compare(TextReplacementEntry o1, TextReplacementEntry o2) {
+      return o1.displayName().get().compareTo(o2.displayName().get());
+    }
   }
 }

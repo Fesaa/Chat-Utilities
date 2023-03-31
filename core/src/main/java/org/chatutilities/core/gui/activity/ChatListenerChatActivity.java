@@ -1,5 +1,7 @@
 package org.chatutilities.core.gui.activity;
 
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import net.labymod.api.Laby;
@@ -106,7 +108,9 @@ public class ChatListenerChatActivity extends ChatInputTabSettingActivity<Flexib
       VerticalListWidget<Widget> list = new VerticalListWidget<>();
       list.addId("entries");
 
-      for (ChatListenerEntry entry : this.config.getChatListeners().get()) {
+      ChatListenerEntry[] chatListenerEntries = this.config.getChatListeners().get().toArray(new ChatListenerEntry[0]);
+      Arrays.sort(chatListenerEntries, new SortByDisplayName());
+      for (ChatListenerEntry entry : chatListenerEntries) {
         list.addChild(this.createEntry(entry));
       }
       ScrollWidget scrollWidget = new ScrollWidget(list);
@@ -153,5 +157,13 @@ public class ChatListenerChatActivity extends ChatInputTabSettingActivity<Flexib
     });
     return list;
   }
+
+  private static class SortByDisplayName implements Comparator<ChatListenerEntry> {
+    @Override
+    public int compare(ChatListenerEntry o1, ChatListenerEntry o2) {
+      return o1.getDisplayName().get().compareTo(o2.getDisplayName().get());
+    }
+  }
+
 
 }
