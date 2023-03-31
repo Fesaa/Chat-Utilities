@@ -185,7 +185,7 @@ public class ChatReceiveEventListener {
     if (chatListener.getDelay().get() > 0) {
       Task.builder(() ->
           chatExecutor.chat(msg, false))
-          .delay((int) (chatListener.getDelay().get() * 1000), TimeUnit.SECONDS)
+          .delay((int) (chatListener.getDelay().get() * 1000), TimeUnit.MILLISECONDS)
           .build()
           .run();
     } else {
