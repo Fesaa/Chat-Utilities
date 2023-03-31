@@ -22,6 +22,7 @@ import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.client.resources.sound.MinecraftSounds;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
+import net.labymod.api.util.concurrent.task.Task;
 import org.chatutilities.core.CU;
 import org.chatutilities.core.config.ChatListenerSubConfig;
 import org.chatutilities.core.config.impl.ChatListenerEntry;
@@ -182,11 +183,11 @@ public class ChatReceiveEventListener {
   private void smartSendWithDelay(ChatListenerEntry chatListener, String msg) {
     ChatExecutor chatExecutor = this.addon.labyAPI().minecraft().chatExecutor();
     if (chatListener.getDelay().get() > 0) {
-      Executors.newScheduledThreadPool(
-          Runtime.getRuntime().availableProcessors()).schedule(
-              () ->
-                  chatExecutor.chat(msg, false),
-          (int) (chatListener.getDelay().get() * 1000), TimeUnit.MILLISECONDS);
+      Task.builder(() ->
+          chatExecutor.chat(msg, false))
+          .delay((int) (chatListener.getDelay().get() * 1000), TimeUnit.SECONDS)
+          .build()
+          .run();
     } else {
       chatExecutor.chat(msg, false);
     }
