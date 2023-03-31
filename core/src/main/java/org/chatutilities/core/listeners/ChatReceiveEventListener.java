@@ -127,7 +127,7 @@ public class ChatReceiveEventListener {
         canUse = true;
       }
 
-      if (!chatListener.getText().isDefaultValue() && canUse) {
+      if (!chatListener.getText().isDefaultValue() && (canUse || chatListener.getText().get().startsWith("/"))) {
         smartSendWithDelay(chatListener, msg);
       }
 
