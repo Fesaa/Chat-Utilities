@@ -57,108 +57,109 @@ public class ChatReceiveEventListener {
 
   @Subscribe
   public void onChatReceiveEvent(ChatReceiveEvent e) {
-    if (!this.addon.configuration().getChatListenerSubConfig().isEnabled()
-        || !this.addon.configuration().enabled().get()) {
+    if (!this.addon.configuration().enabled().get()) {
       return;
     }
 
-    ClientPlayer p = this.addon.labyAPI().minecraft().getClientPlayer();
-    if (p == null) {
-      return;
-    }
-
-    for (ChatListenerEntry chatListener : this.addon.configuration().getChatListeners().get()) {
-      if (!chatListener.getEnabled().get()
-          || (chatListener.getServerConfig().enabled().get()
-          && chatListener.getServerConfig().notAllowedToBeUsed(
-          this.addon.labyAPI().serverController().getCurrentServerData()
-      ))) {
-        continue;
+    if (this.addon.configuration().getChatListenerSubConfig().isEnabled()) {
+      ClientPlayer p = this.addon.labyAPI().minecraft().getClientPlayer();
+      if (p == null) {
+        return;
       }
 
-      String msg = chatListener.getText().get();
-
-      if (chatListener.getBlackListConfig().isBlockedByBlackList(e.chatMessage().getPlainText())) {
-        continue;
-      }
-
-      String name = p.getName();
-      String matchMessage = chatListener.getRegex().get().replace("&player", name);
-
-      MatchType matchType = chatListener.getMatchType().get();
-
-      if (matchType.equals(MatchType.SIMPLIFIED_REGEX)) {
-        for (String regexChar : this.regexReplaceChars) {
-          matchMessage = matchMessage.replace(regexChar, "\\" + regexChar);
-        }
-        matchMessage = matchMessage.replace("*", ".*");
-        matchMessage = matchMessage.replace("%", "(.*)");
-        matchType = MatchType.REGEX;
-      }
-
-      if (matchType.equals(MatchType.REGEX)) {
-        Pattern pattern;
-        try {
-          pattern = Pattern.compile(matchMessage);
-        } catch (PatternSyntaxException patternSyntaxException) {
-          continue;
-        }
-        Matcher matcher = pattern.matcher(e.chatMessage().getPlainText());
-        if (!matcher.matches()) {
+      for (ChatListenerEntry chatListener : this.addon.configuration().getChatListeners().get()) {
+        if (!chatListener.getEnabled().get()
+            || (chatListener.getServerConfig().enabled().get()
+            && chatListener.getServerConfig().notAllowedToBeUsed(
+            this.addon.labyAPI().serverController().getCurrentServerData()
+        ))) {
           continue;
         }
 
-        for (int i = 1; i <= matcher.groupCount(); i++) {
-          msg = msg.replace("%" + i, matcher.group(i));
-        }
-      }
+        String msg = chatListener.getText().get();
 
-      if (matchType.equals(MatchType.EQUALS)) {
-        if (!e.chatMessage().getPlainText().equals(matchMessage)) {
+        if (chatListener.getBlackListConfig().isBlockedByBlackList(e.chatMessage().getPlainText())) {
           continue;
         }
-      }
 
-      if (matchType.equals(MatchType.CONTAINS)) {
-        if (!e.chatMessage().getPlainText().contains(matchMessage)) {
-          continue;
+        String name = p.getName();
+        String matchMessage = chatListener.getRegex().get().replace("&player", name);
+
+        MatchType matchType = chatListener.getMatchType().get();
+
+        if (matchType.equals(MatchType.SIMPLIFIED_REGEX)) {
+          for (String regexChar : this.regexReplaceChars) {
+            matchMessage = matchMessage.replace(regexChar, "\\" + regexChar);
+          }
+          matchMessage = matchMessage.replace("*", ".*");
+          matchMessage = matchMessage.replace("%", "(.*)");
+          matchType = MatchType.REGEX;
         }
-      }
 
-      String ID = chatListener.getDisplayName().get() + chatListener.getRegex().get() + chatListener.getText().get();
-      if (!this.usage.containsKey(ID)) {
-        this.usage.put(ID, new ArrayList<>());
-      }
+        if (matchType.equals(MatchType.REGEX)) {
+          Pattern pattern;
+          try {
+            pattern = Pattern.compile(matchMessage);
+          } catch (PatternSyntaxException patternSyntaxException) {
+            continue;
+          }
+          Matcher matcher = pattern.matcher(e.chatMessage().getPlainText());
+          if (!matcher.matches()) {
+            continue;
+          }
 
-      // Anti Spam
-      ChatListenerSubConfig chatListenerSubConfig = this.addon.configuration().getChatListenerSubConfig();
-      boolean useAntiSpam = chatListenerSubConfig.getUseAntiSpam().get();
-      boolean canUse;
-      if (useAntiSpam) {
-        long now = (new Date()).getTime();
-        int maxFrequency = chatListenerSubConfig.getMaxFrequency().get();
-        int maxTimeSpan = chatListenerSubConfig.getMaxTimeSpan().get();
-        canUse = this.canUse(now, maxFrequency, maxTimeSpan, ID);
-        this.usage.get(ID).add(now);
-      } else {
-        canUse = true;
-      }
+          for (int i = 1; i <= matcher.groupCount(); i++) {
+            msg = msg.replace("%" + i, matcher.group(i));
+          }
+        }
 
-      if (!chatListener.getText().isDefaultValue() && (canUse || chatListener.getText().get().startsWith("/"))) {
-        smartSendWithDelay(chatListener, msg);
-      }
+        if (matchType.equals(MatchType.EQUALS)) {
+          if (!e.chatMessage().getPlainText().equals(matchMessage)) {
+            continue;
+          }
+        }
 
-      if (chatListener.getSoundConfig().getEnabled().get()) {
-        SoundConfig soundConfig = chatListener.getSoundConfig();
-        MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
-        ResourceLocation sound = ResourceLocation.create("minecraft", soundConfig.getSoundId().get());
-        if (chatListener.getDelay().get() > 0) {
-          Executors.newScheduledThreadPool(
-              Runtime.getRuntime().availableProcessors()).schedule(
-              () -> minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get()),
-              (int) (chatListener.getDelay().get() * 1000), TimeUnit.MILLISECONDS);
+        if (matchType.equals(MatchType.CONTAINS)) {
+          if (!e.chatMessage().getPlainText().contains(matchMessage)) {
+            continue;
+          }
+        }
+
+        String ID = chatListener.getDisplayName().get() + chatListener.getRegex().get() + chatListener.getText().get();
+        if (!this.usage.containsKey(ID)) {
+          this.usage.put(ID, new ArrayList<>());
+        }
+
+        // Anti Spam
+        ChatListenerSubConfig chatListenerSubConfig = this.addon.configuration().getChatListenerSubConfig();
+        boolean useAntiSpam = chatListenerSubConfig.getUseAntiSpam().get();
+        boolean canUse;
+        if (useAntiSpam) {
+          long now = (new Date()).getTime();
+          int maxFrequency = chatListenerSubConfig.getMaxFrequency().get();
+          int maxTimeSpan = chatListenerSubConfig.getMaxTimeSpan().get();
+          canUse = this.canUse(now, maxFrequency, maxTimeSpan, ID);
+          this.usage.get(ID).add(now);
         } else {
-          minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get());
+          canUse = true;
+        }
+
+        if (!chatListener.getText().isDefaultValue() && (canUse || chatListener.getText().get().startsWith("/"))) {
+          smartSendWithDelay(chatListener, msg);
+        }
+
+        if (chatListener.getSoundConfig().getEnabled().get()) {
+          SoundConfig soundConfig = chatListener.getSoundConfig();
+          MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
+          ResourceLocation sound = ResourceLocation.create("minecraft", soundConfig.getSoundId().get());
+          if (chatListener.getDelay().get() > 0) {
+            Executors.newScheduledThreadPool(
+                Runtime.getRuntime().availableProcessors()).schedule(
+                () -> minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get()),
+                (int) (chatListener.getDelay().get() * 1000), TimeUnit.MILLISECONDS);
+          } else {
+            minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get());
+          }
         }
       }
     }
