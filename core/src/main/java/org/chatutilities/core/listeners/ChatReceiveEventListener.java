@@ -153,10 +153,11 @@ public class ChatReceiveEventListener {
           MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
           ResourceLocation sound = ResourceLocation.create("minecraft", soundConfig.getSoundId().get());
           if (chatListener.getDelay().get() > 0) {
-            Executors.newScheduledThreadPool(
-                Runtime.getRuntime().availableProcessors()).schedule(
-                () -> minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get()),
-                (int) (chatListener.getDelay().get() * 1000), TimeUnit.MILLISECONDS);
+            Task.builder(() ->
+                minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get()))
+                .delay((int) (chatListener.getDelay().get() * 1000), TimeUnit.MILLISECONDS)
+                .build()
+                .execute();
           } else {
             minecraftSounds.playSound(sound, soundConfig.getVolume().get(), soundConfig.getPitch().get());
           }
@@ -188,7 +189,7 @@ public class ChatReceiveEventListener {
           chatExecutor.chat(msg, false))
           .delay((int) (chatListener.getDelay().get() * 1000), TimeUnit.MILLISECONDS)
           .build()
-          .run();
+          .execute();
     } else {
       chatExecutor.chat(msg, false);
     }
