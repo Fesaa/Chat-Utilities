@@ -16,7 +16,7 @@ public class SoundConfig extends Config {
   @SliderSetting(min=0, max = 100)
   private final ConfigProperty<Integer> volume = new ConfigProperty<>(100);
 
-  @SliderSetting(min=0, max=2, steps = 0.1F)
+  @SliderSetting(min=0.5f, max=2, steps = 0.1F)
   private final ConfigProperty<Float> pitch = new ConfigProperty<>(1F);
 
   public ConfigProperty<Boolean> getEnabled() {
