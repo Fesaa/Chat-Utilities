@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import net.labymod.api.Laby;
 import net.labymod.api.client.chat.ChatExecutor;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.event.ClickEvent;
@@ -170,13 +171,11 @@ public class ChatReceiveEventListener {
       if (msg.trim().equals("")) {
         return;
       }
-
       e.setMessage(e.message()
-          .append(Component.text(" [").style(this.onlyWhiteColour))
-          .append(Component.text(this.addon.configuration().getCopyText().get()).style(this.onlyGreenColour)
+          .append(Component.text(Laby.references().componentMapper()
+                  .translateColorCodes('&', '\u00a7', this.addon.configuration().getCopyText().get()))
               .clickEvent(ClickEvent.copyToClipboard(msg))
-              .hoverEvent(HoverEvent.showText(Component.text("Click to copy."))))
-          .append(Component.text("]").style(onlyWhiteColour))
+              .hoverEvent(HoverEvent.showText(Component.text(this.addon.configuration().getCopyTooltip().get()))))
       );
     }
 

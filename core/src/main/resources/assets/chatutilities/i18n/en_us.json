@@ -24,8 +24,11 @@
       "copy": {
         "name": "Copy Button"
       },
-      "copyButtonText": {
-        "name": "Copy Button Text"
+      "copyFormat": {
+        "name": "Copy Format"
+      },
+      "copyTooltip" :{
+        "name": "Click to copy."
       }
     },
     "chatInput": {
