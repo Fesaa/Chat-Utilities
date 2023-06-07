@@ -25,7 +25,8 @@
         "name": "Copy Button"
       },
       "copyFormat": {
-        "name": "Copy Format"
+        "name": "Copy Format",
+        "description": "Use &<code> to format your copy button"
       },
       "copyTooltip" :{
         "name": "Click to copy."

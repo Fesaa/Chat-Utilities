@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,9 +14,6 @@ import net.labymod.api.client.chat.ChatExecutor;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.event.ClickEvent;
 import net.labymod.api.client.component.event.HoverEvent;
-import net.labymod.api.client.component.format.NamedTextColor;
-import net.labymod.api.client.component.format.Style;
-import net.labymod.api.client.component.format.TextDecoration;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.client.resources.sound.MinecraftSounds;
@@ -35,22 +31,6 @@ public class ChatReceiveEventListener {
   private final CU addon;
 
   private final HashMap<String, List<Long>> usage = new HashMap<>();
-  private final Style onlyWhiteColour = Style.builder()
-      .color(NamedTextColor.WHITE)
-      .undecorate(TextDecoration.STRIKETHROUGH,
-          TextDecoration.BOLD,
-          TextDecoration.ITALIC,
-          TextDecoration.OBFUSCATED,
-          TextDecoration.UNDERLINED)
-      .build();
-  private final Style onlyGreenColour = Style.builder()
-      .color(NamedTextColor.GREEN)
-      .undecorate(TextDecoration.STRIKETHROUGH,
-          TextDecoration.BOLD,
-          TextDecoration.ITALIC,
-          TextDecoration.OBFUSCATED,
-          TextDecoration.UNDERLINED)
-      .build();
 
   public ChatReceiveEventListener(CU addon) {this.addon = addon;}
 
