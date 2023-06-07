@@ -5,18 +5,15 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+import net.labymod.api.Laby;
 import net.labymod.api.client.chat.ChatExecutor;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.event.ClickEvent;
 import net.labymod.api.client.component.event.HoverEvent;
-import net.labymod.api.client.component.format.NamedTextColor;
-import net.labymod.api.client.component.format.Style;
-import net.labymod.api.client.component.format.TextDecoration;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.client.resources.sound.MinecraftSounds;
@@ -34,22 +31,6 @@ public class ChatReceiveEventListener {
   private final CU addon;
 
   private final HashMap<String, List<Long>> usage = new HashMap<>();
-  private final Style onlyWhiteColour = Style.builder()
-      .color(NamedTextColor.WHITE)
-      .undecorate(TextDecoration.STRIKETHROUGH,
-          TextDecoration.BOLD,
-          TextDecoration.ITALIC,
-          TextDecoration.OBFUSCATED,
-          TextDecoration.UNDERLINED)
-      .build();
-  private final Style onlyGreenColour = Style.builder()
-      .color(NamedTextColor.GREEN)
-      .undecorate(TextDecoration.STRIKETHROUGH,
-          TextDecoration.BOLD,
-          TextDecoration.ITALIC,
-          TextDecoration.OBFUSCATED,
-          TextDecoration.UNDERLINED)
-      .build();
 
   public ChatReceiveEventListener(CU addon) {this.addon = addon;}
 
@@ -170,13 +151,11 @@ public class ChatReceiveEventListener {
       if (msg.trim().equals("")) {
         return;
       }
-
       e.setMessage(e.message()
-          .append(Component.text(" [").style(this.onlyWhiteColour))
-          .append(Component.text("Copy").style(this.onlyGreenColour)
+          .append(Component.text(Laby.references().componentMapper()
+                  .translateColorCodes('&', '\u00a7', this.addon.configuration().getCopyText().get()))
               .clickEvent(ClickEvent.copyToClipboard(msg))
-              .hoverEvent(HoverEvent.showText(Component.text("Click to copy."))))
-          .append(Component.text("]").style(onlyWhiteColour))
+              .hoverEvent(HoverEvent.showText(Component.text(this.addon.configuration().getCopyTooltip().get()))))
       );
     }
 
