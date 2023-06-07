@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
+import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.TextFieldSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.annotation.Exclude;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
@@ -18,6 +19,9 @@ public class MainConfig extends AddonConfig {
 
   @SwitchSetting
   private final ConfigProperty<Boolean> copy = new ConfigProperty<>(false);
+
+  @TextFieldSetting
+  private final ConfigProperty<String> copyButtonText = new ConfigProperty<>("Copy");
 
   private final ChatListenerSubConfig chatListener = new ChatListenerSubConfig();
 
@@ -51,5 +55,9 @@ public class MainConfig extends AddonConfig {
 
   public ConfigProperty<Boolean> getCopy() {
     return copy;
+  }
+
+  public ConfigProperty<String> getCopyText() {
+    return copyButtonText;
   }
 }

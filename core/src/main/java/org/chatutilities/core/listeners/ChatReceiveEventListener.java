@@ -173,7 +173,7 @@ public class ChatReceiveEventListener {
 
       e.setMessage(e.message()
           .append(Component.text(" [").style(this.onlyWhiteColour))
-          .append(Component.text("Copy").style(this.onlyGreenColour)
+          .append(Component.text(this.addon.configuration().getCopyText().get()).style(this.onlyGreenColour)
               .clickEvent(ClickEvent.copyToClipboard(msg))
               .hoverEvent(HoverEvent.showText(Component.text("Click to copy."))))
           .append(Component.text("]").style(onlyWhiteColour))

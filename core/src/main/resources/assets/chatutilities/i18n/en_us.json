@@ -23,6 +23,9 @@
       },
       "copy": {
         "name": "Copy Button"
+      },
+      "copyButtonText": {
+        "name": "Copy Button Text"
       }
     },
     "chatInput": {
