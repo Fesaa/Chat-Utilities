@@ -142,6 +142,23 @@
             "address": {
               "name": "Server Address"
             }
+          },
+          "advancedCooldown": {
+            "name": "Advanced Cooldown",
+            "cooldown": {
+              "name": "Cooldown"
+            },
+            "cooldownType": {
+              "name": "Cooldown Type",
+              "entries": {
+                "global": "Global",
+                "partial": "Partial"
+              }
+            },
+            "group": {
+              "name": "Group",
+              "description": "The regex group to cooldown on"
+            }
           }
         }
       }

@@ -22,6 +22,8 @@ import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.util.concurrent.task.Task;
 import org.chatutilities.core.CU;
 import org.chatutilities.core.config.ChatListenerSubConfig;
+import org.chatutilities.core.config.impl.AdvancedCooldown;
+import org.chatutilities.core.config.impl.AdvancedCooldown.CooldownType;
 import org.chatutilities.core.config.impl.ChatListenerEntry;
 import org.chatutilities.core.config.impl.ChatListenerEntry.MatchType;
 import org.chatutilities.core.config.impl.SoundConfig;
@@ -63,6 +65,15 @@ public class ChatReceiveEventListener {
           continue;
         }
 
+        AdvancedCooldown cooldown = chatListener.getAdvancedCooldown();
+        if (cooldown.isEnabled() && cooldown.getCooldownType() == CooldownType.GLOBAL) {
+          long now = System.currentTimeMillis();
+          if (now - cooldown.getLastUsage() < cooldown.getCooldown() * 1000) {
+            continue;
+          }
+          cooldown.setLastUsage(now);
+        }
+
         String name = p.getName();
         String matchMessage = chatListener.getRegex().get().replace("&player", name);
 
@@ -87,6 +98,22 @@ public class ChatReceiveEventListener {
           Matcher matcher = pattern.matcher(e.chatMessage().getPlainText());
           if (!matcher.matches()) {
             continue;
+          }
+
+          if (cooldown.isEnabled() && cooldown.getCooldownType() == CooldownType.PARTIAL) {
+            int group = cooldown.getGroup().get();
+            if (group > matcher.groupCount()) {
+              addon.logger().error("The group " + group + " does not exist in the regex " + matchMessage);
+              continue;
+            }
+            String groupMatch = matcher.group(group);
+            long now = System.currentTimeMillis();
+            if (cooldown.getGroupUsage().containsKey(groupMatch)) {
+              if (now - cooldown.getGroupUsage().get(groupMatch) < cooldown.getCooldown() * 1000) {
+                continue;
+              }
+            }
+            cooldown.getGroupUsage().put(groupMatch, now);
           }
 
           for (int i = 1; i <= matcher.groupCount(); i++) {

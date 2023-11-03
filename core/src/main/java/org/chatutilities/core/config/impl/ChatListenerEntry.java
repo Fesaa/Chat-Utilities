@@ -33,6 +33,8 @@ public class ChatListenerEntry extends Config {
 
   private ServerConfig serverConfig = new ServerConfig();
 
+  private AdvancedCooldown advancedCooldown = new AdvancedCooldown();
+
   public ChatListenerEntry() {
   }
 
@@ -45,7 +47,8 @@ public class ChatListenerEntry extends Config {
       SoundConfig soundConfig,
       float delay,
       BlackListConfig blackListConfig,
-      ServerConfig serverConfig
+      ServerConfig serverConfig,
+      AdvancedCooldown advancedCooldown
   ) {
     this.enabled.set(enabled);
     this.displayName.set(displayName);
@@ -56,6 +59,7 @@ public class ChatListenerEntry extends Config {
     this.delay.set(delay);
     this.blackListConfig = blackListConfig;
     this.serverConfig = serverConfig;
+    this.advancedCooldown = advancedCooldown;
   }
 
   public ConfigProperty<Boolean> getEnabled() {
@@ -95,6 +99,10 @@ public class ChatListenerEntry extends Config {
     return serverConfig;
   }
 
+  public AdvancedCooldown getAdvancedCooldown() {
+    return advancedCooldown;
+  }
+
   public ChatListenerEntry copy() {
     return new ChatListenerEntry(
         this.enabled.get(),
@@ -105,7 +113,8 @@ public class ChatListenerEntry extends Config {
         this.soundConfig,
         this.delay.get(),
         this.blackListConfig,
-        this.serverConfig
+        this.serverConfig,
+        this.advancedCooldown
     );
   }
 
