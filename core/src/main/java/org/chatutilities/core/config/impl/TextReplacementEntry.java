@@ -20,6 +20,9 @@ public class TextReplacementEntry extends Config {
   @TextFieldSetting
   private final ConfigProperty<String> message = new ConfigProperty<>("");
 
+  @SwitchSetting
+  private final ConfigProperty<Boolean> onReceive = new ConfigProperty<>(false);
+
   private ServerConfig serverConfig = new ServerConfig();
 
   public TextReplacementEntry() {
@@ -30,12 +33,14 @@ public class TextReplacementEntry extends Config {
       String displayName,
       String text,
       String message,
+      boolean onReceive,
       ServerConfig serverConfig
   ) {
     this.enabled.set(enabled);
     this.displayName.set(displayName);
     this.text.set(text);
     this.message.set(message);
+    this.onReceive.set(onReceive);
     this.serverConfig = serverConfig;
   }
 
@@ -59,6 +64,10 @@ public class TextReplacementEntry extends Config {
     return this.serverConfig;
   }
 
+  public ConfigProperty<Boolean> onReceive() {
+    return this.onReceive;
+  }
+
   public ServerAddress serverAddress() {
     return this.serverConfig.enabled().get()
         ? ServerAddress.parse(this.serverConfig.address().get())
@@ -75,6 +84,7 @@ public class TextReplacementEntry extends Config {
         this.displayName.get(),
         this.text.get(),
         this.message.get(),
+        this.onReceive.get(),
         this.serverConfig.copy()
     );
   }

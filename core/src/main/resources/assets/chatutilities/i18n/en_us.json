@@ -67,6 +67,10 @@
             "address": {
               "name": "Server Address"
             }
+          },
+          "onReceive": {
+            "name": "On Receive",
+            "description": "Replace the message when receiving a message. Limited by how components are send over."
           }
         },
         "chatlistener": {

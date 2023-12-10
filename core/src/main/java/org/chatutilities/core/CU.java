@@ -10,6 +10,7 @@ import org.chatutilities.core.gui.activity.ChatListenerChatActivity;
 import org.chatutilities.core.gui.activity.TextReplacementChatActivity;
 import org.chatutilities.core.listeners.ChatMessageSendEventListener;
 import org.chatutilities.core.listeners.ChatReceiveEventListener;
+import org.chatutilities.core.listeners.ChatReceiveReplaceListener;
 import org.chatutilities.core.listeners.ConfigurationSaveEventListener;
 
 @AddonMain
@@ -31,6 +32,7 @@ public class CU extends LabyAddon<MainConfig> {
     this.registerListener(new ChatReceiveEventListener(this));
     this.registerListener(new ChatMessageSendEventListener(this));
     this.registerListener(new ConfigurationSaveEventListener(this));
+    this.registerListener(new ChatReceiveReplaceListener(this));
 
     if (this.configuration().textReplacement().get()) {
       this.labyAPI().chatProvider().chatInputService().register(CU.getTextReplacementWidget());
