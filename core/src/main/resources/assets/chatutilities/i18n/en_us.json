@@ -95,6 +95,10 @@
             "name": "Response",
             "description": "The text to send in response. Leave empty to not send anything. Add a / for a command"
           },
+          "cancel": {
+            "name": "Cancel",
+            "description": "Stop the message from being displayed"
+          },
           "soundConfig": {
             "name": "Sound",
             "soundId": {

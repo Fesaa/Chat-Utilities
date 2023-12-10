@@ -24,6 +24,9 @@ public class ChatListenerEntry extends Config {
   @TextFieldSetting
   private final ConfigProperty<String> text = new ConfigProperty<>("");
 
+  @SwitchSetting
+  private final ConfigProperty<Boolean> cancel = new ConfigProperty<>(false);
+
   private SoundConfig soundConfig = new SoundConfig();
 
   @SliderSetting(min = 0, max = 10, steps = 0.1F)
@@ -44,6 +47,7 @@ public class ChatListenerEntry extends Config {
       MatchType matchType,
       String regex,
       String text,
+      boolean cancel,
       SoundConfig soundConfig,
       float delay,
       BlackListConfig blackListConfig,
@@ -55,6 +59,7 @@ public class ChatListenerEntry extends Config {
     this.matchType.set(matchType);
     this.regex.set(regex);
     this.text.set(text);
+    this.cancel.set(cancel);
     this.soundConfig = soundConfig;
     this.delay.set(delay);
     this.blackListConfig = blackListConfig;
@@ -94,6 +99,9 @@ public class ChatListenerEntry extends Config {
     return soundConfig;
   }
 
+  public ConfigProperty<Boolean> getCancel() {
+    return cancel;
+  }
 
   public ServerConfig getServerConfig() {
     return serverConfig;
@@ -110,6 +118,7 @@ public class ChatListenerEntry extends Config {
         this.matchType.get(),
         this.regex.get(),
         this.text.get(),
+        this.cancel.get(),
         this.soundConfig,
         this.delay.get(),
         this.blackListConfig,

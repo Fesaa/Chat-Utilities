@@ -156,6 +156,10 @@ public class ChatReceiveEventListener {
           smartSendWithDelay(chatListener, msg);
         }
 
+        if (chatListener.getCancel().get()) {
+          e.setCancelled(true);
+        }
+
         if (chatListener.getSoundConfig().getEnabled().get()) {
           SoundConfig soundConfig = chatListener.getSoundConfig();
           MinecraftSounds minecraftSounds = this.addon.labyAPI().minecraft().sounds();
