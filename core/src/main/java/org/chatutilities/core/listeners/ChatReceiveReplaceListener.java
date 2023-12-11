@@ -8,7 +8,7 @@ import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
 import org.chatutilities.core.CU;
-import java.util.concurrent.atomic.AtomicBoolean;
+import org.chatutilities.core.config.impl.TextReplacementEntry;
 import java.util.function.Supplier;
 
 public class ChatReceiveReplaceListener {
@@ -26,19 +26,18 @@ public class ChatReceiveReplaceListener {
     }
 
     Component msg = e.message();
-    AtomicBoolean replaced = new AtomicBoolean(false);
+    boolean replaced = false;
 
-    addon.configuration().getTextReplacements().get().stream()
-        .filter(entry -> entry.getEnabled().get())
-        .filter(entry -> entry.onReceive().get())
-        .forEach(entry -> {
-          if (replace(msg, entry.getText().get(), () -> Component.text(entry.message().get()))) {
-              replaced.set(true);
-          }
-        });
+    for (TextReplacementEntry entry : addon.configuration().getTextReplacements().get()) {
+      if (entry.getEnabled().get() && entry.onReceive().get()) {
+        if (replace(msg, entry.getText().get(), () -> Component.text(entry.message().get()))) {
+          replaced = true;
+        }
+      }
+    }
 
     // We don't want false reports because of this...
-    if (replaced.get()) {
+    if (replaced) {
       msg.append(PlayerNameTagRenderEvent.EDITED_COMPONENT);
     }
 
