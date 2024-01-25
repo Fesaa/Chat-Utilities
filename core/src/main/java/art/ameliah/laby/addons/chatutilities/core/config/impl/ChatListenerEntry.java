@@ -38,6 +38,8 @@ public class ChatListenerEntry extends Config {
 
   private AdvancedCooldown advancedCooldown = new AdvancedCooldown();
 
+  private CubeCraftSupport cubeCraftSupport = new CubeCraftSupport();
+
   public ChatListenerEntry() {
   }
 
@@ -52,7 +54,8 @@ public class ChatListenerEntry extends Config {
       float delay,
       BlackListConfig blackListConfig,
       ServerConfig serverConfig,
-      AdvancedCooldown advancedCooldown
+      AdvancedCooldown advancedCooldown,
+      CubeCraftSupport cubeCraftSupport
   ) {
     this.enabled.set(enabled);
     this.displayName.set(displayName);
@@ -65,6 +68,7 @@ public class ChatListenerEntry extends Config {
     this.blackListConfig = blackListConfig;
     this.serverConfig = serverConfig;
     this.advancedCooldown = advancedCooldown;
+    this.cubeCraftSupport = cubeCraftSupport;
   }
 
   public ConfigProperty<Boolean> getEnabled() {
@@ -111,6 +115,10 @@ public class ChatListenerEntry extends Config {
     return advancedCooldown;
   }
 
+  public CubeCraftSupport getCubeCraftSupport() {
+    return cubeCraftSupport;
+  }
+
   public ChatListenerEntry copy() {
     return new ChatListenerEntry(
         this.enabled.get(),
@@ -123,7 +131,8 @@ public class ChatListenerEntry extends Config {
         this.delay.get(),
         this.blackListConfig,
         this.serverConfig,
-        this.advancedCooldown
+        this.advancedCooldown,
+        this.cubeCraftSupport
     );
   }
 

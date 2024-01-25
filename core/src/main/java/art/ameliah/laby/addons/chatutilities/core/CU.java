@@ -7,15 +7,24 @@ import art.ameliah.laby.addons.chatutilities.core.listeners.ChatMessageSendEvent
 import art.ameliah.laby.addons.chatutilities.core.listeners.ChatReceiveEventListener;
 import art.ameliah.laby.addons.chatutilities.core.listeners.ChatReceiveReplaceListener;
 import art.ameliah.laby.addons.chatutilities.core.listeners.ConfigurationSaveEventListener;
+import art.ameliah.laby.addons.cubepanion.core.Cubepanion;
 import net.labymod.api.addon.LabyAddon;
+import net.labymod.api.addon.LoadedAddon;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.gui.screen.widget.widgets.activity.chat.ChatButtonWidget;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.models.addon.annotation.AddonMain;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Optional;
+
 @AddonMain
 public class CU extends LabyAddon<MainConfig> {
   private static CU instance;
+
+  private boolean cubepanionSupported = false;
+  private Cubepanion cubepanion = null;
 
   public CU() {
     instance = this;
@@ -40,6 +49,30 @@ public class CU extends LabyAddon<MainConfig> {
     if (this.configuration().getChatListenerSubConfig().isEnabled()) {
     this.labyAPI().chatProvider().chatInputService().register(CU.getChatListenerWidget());
     }
+
+    Optional<LoadedAddon> optionalAddon = labyAPI().addonService().getAddon("cubepanion");
+    cubepanionSupported = optionalAddon.isPresent();
+
+    if (optionalAddon.isPresent()) {
+      var addon = optionalAddon.get();
+      try {
+        Method get = addon.getMainClass().getMethod("get");
+        cubepanion = (Cubepanion) get.invoke(null);
+        if (cubepanion == null) {
+          logger().info("WTF");
+        }
+      } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException e) {
+          logger().error("Failed to get Cubepanion instance", e);
+      }
+    }
+  }
+
+  public boolean isCubepanionSupported() {
+    return cubepanionSupported;
+  }
+
+  public Cubepanion getCubepanion() {
+    return Cubepanion.get();
   }
 
   @Override
