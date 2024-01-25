@@ -1,4 +1,4 @@
-package org.chatutilities.core.config;
+package art.ameliah.laby.addons.chatutilities.core.config;
 
 import net.labymod.api.client.gui.screen.widget.widgets.input.SliderWidget.SliderSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;

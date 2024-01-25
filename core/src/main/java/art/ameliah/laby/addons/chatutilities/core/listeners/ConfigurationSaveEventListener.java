@@ -1,10 +1,10 @@
-package org.chatutilities.core.listeners;
+package art.ameliah.laby.addons.chatutilities.core.listeners;
 
 import net.labymod.api.client.chat.input.ChatInputRegistry;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.labymod.config.ConfigurationSaveEvent;
-import org.chatutilities.core.CU;
-import org.chatutilities.core.config.MainConfig;
+import art.ameliah.laby.addons.chatutilities.core.CU;
+import art.ameliah.laby.addons.chatutilities.core.config.MainConfig;
 
 public class ConfigurationSaveEventListener {
 

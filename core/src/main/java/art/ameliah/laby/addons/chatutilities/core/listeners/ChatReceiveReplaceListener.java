@@ -1,4 +1,4 @@
-package org.chatutilities.core.listeners;
+package art.ameliah.laby.addons.chatutilities.core.listeners;
 
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.TextComponent;
@@ -7,8 +7,8 @@ import net.labymod.api.event.Priority;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.event.client.render.PlayerNameTagRenderEvent;
-import org.chatutilities.core.CU;
-import org.chatutilities.core.config.impl.TextReplacementEntry;
+import art.ameliah.laby.addons.chatutilities.core.CU;
+import art.ameliah.laby.addons.chatutilities.core.config.impl.TextReplacementEntry;
 import java.util.function.Supplier;
 
 public class ChatReceiveReplaceListener {

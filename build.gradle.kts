@@ -1,3 +1,5 @@
+import net.labymod.gradle.core.addon.info.dependency.AddonDependency
+
 plugins {
     id("java-library")
     id("net.labymod.gradle")
@@ -10,7 +12,7 @@ version = "1.0.0"
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
 labyMod {
-    defaultPackageName = "org.chatutilities" //change this to your main package name (used by all modules)
+    defaultPackageName = "art.ameliah.laby.addons.chatutilities" //change this to your main package name (used by all modules)
     addonInfo {
         namespace = "chatutilities"
         displayName = "Chat Utilities"
@@ -18,6 +20,7 @@ labyMod {
         description = "Adds chat listeners and text replacement to the LabyMod client."
         minecraftVersion = "*"
         version = System.getenv().getOrDefault("VERSION", "0.0.1")
+        addonDependencies.add(AddonDependency("cubepanion", true))
     }
 
     minecraft {

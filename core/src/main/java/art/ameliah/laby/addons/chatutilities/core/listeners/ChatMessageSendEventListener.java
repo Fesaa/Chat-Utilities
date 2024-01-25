@@ -1,9 +1,9 @@
-package org.chatutilities.core.listeners;
+package art.ameliah.laby.addons.chatutilities.core.listeners;
 
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatMessageSendEvent;
-import org.chatutilities.core.CU;
-import org.chatutilities.core.config.impl.TextReplacementEntry;
+import art.ameliah.laby.addons.chatutilities.core.CU;
+import art.ameliah.laby.addons.chatutilities.core.config.impl.TextReplacementEntry;
 
 public class ChatMessageSendEventListener {
 

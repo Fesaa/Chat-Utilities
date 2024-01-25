@@ -1,17 +1,17 @@
-package org.chatutilities.core;
+package art.ameliah.laby.addons.chatutilities.core;
 
+import art.ameliah.laby.addons.chatutilities.core.config.MainConfig;
+import art.ameliah.laby.addons.chatutilities.core.gui.activity.ChatListenerChatActivity;
+import art.ameliah.laby.addons.chatutilities.core.gui.activity.TextReplacementChatActivity;
+import art.ameliah.laby.addons.chatutilities.core.listeners.ChatMessageSendEventListener;
+import art.ameliah.laby.addons.chatutilities.core.listeners.ChatReceiveEventListener;
+import art.ameliah.laby.addons.chatutilities.core.listeners.ChatReceiveReplaceListener;
+import art.ameliah.laby.addons.chatutilities.core.listeners.ConfigurationSaveEventListener;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.client.gui.icon.Icon;
 import net.labymod.api.client.gui.screen.widget.widgets.activity.chat.ChatButtonWidget;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.models.addon.annotation.AddonMain;
-import org.chatutilities.core.config.MainConfig;
-import org.chatutilities.core.gui.activity.ChatListenerChatActivity;
-import org.chatutilities.core.gui.activity.TextReplacementChatActivity;
-import org.chatutilities.core.listeners.ChatMessageSendEventListener;
-import org.chatutilities.core.listeners.ChatReceiveEventListener;
-import org.chatutilities.core.listeners.ChatReceiveReplaceListener;
-import org.chatutilities.core.listeners.ConfigurationSaveEventListener;
 
 @AddonMain
 public class CU extends LabyAddon<MainConfig> {

@@ -1,4 +1,4 @@
-package org.chatutilities.core.listeners;
+package art.ameliah.laby.addons.chatutilities.core.listeners;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +9,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
+
+import art.ameliah.laby.addons.chatutilities.core.config.impl.ChatListenerEntry;
 import net.labymod.api.Laby;
 import net.labymod.api.client.chat.ChatExecutor;
 import net.labymod.api.client.component.Component;
@@ -17,17 +19,14 @@ import net.labymod.api.client.component.event.HoverEvent;
 import net.labymod.api.client.entity.player.ClientPlayer;
 import net.labymod.api.client.resources.ResourceLocation;
 import net.labymod.api.client.resources.sound.MinecraftSounds;
-import net.labymod.api.event.Priority;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.chat.ChatReceiveEvent;
 import net.labymod.api.util.concurrent.task.Task;
-import org.chatutilities.core.CU;
-import org.chatutilities.core.config.ChatListenerSubConfig;
-import org.chatutilities.core.config.impl.AdvancedCooldown;
-import org.chatutilities.core.config.impl.AdvancedCooldown.CooldownType;
-import org.chatutilities.core.config.impl.ChatListenerEntry;
-import org.chatutilities.core.config.impl.ChatListenerEntry.MatchType;
-import org.chatutilities.core.config.impl.SoundConfig;
+import art.ameliah.laby.addons.chatutilities.core.CU;
+import art.ameliah.laby.addons.chatutilities.core.config.ChatListenerSubConfig;
+import art.ameliah.laby.addons.chatutilities.core.config.impl.AdvancedCooldown;
+import art.ameliah.laby.addons.chatutilities.core.config.impl.AdvancedCooldown.CooldownType;
+import art.ameliah.laby.addons.chatutilities.core.config.impl.SoundConfig;
 
 public class ChatReceiveEventListener {
 
@@ -78,18 +77,18 @@ public class ChatReceiveEventListener {
         String name = p.getName();
         String matchMessage = chatListener.getRegex().get().replace("&player", name);
 
-        MatchType matchType = chatListener.getMatchType().get();
+        ChatListenerEntry.MatchType matchType = chatListener.getMatchType().get();
 
-        if (matchType.equals(MatchType.SIMPLIFIED_REGEX)) {
+        if (matchType.equals(ChatListenerEntry.MatchType.SIMPLIFIED_REGEX)) {
           for (String regexChar : this.regexReplaceChars) {
             matchMessage = matchMessage.replace(regexChar, "\\" + regexChar);
           }
           matchMessage = matchMessage.replace("*", ".*");
           matchMessage = matchMessage.replace("%", "(.*)");
-          matchType = MatchType.REGEX;
+          matchType = ChatListenerEntry.MatchType.REGEX;
         }
 
-        if (matchType.equals(MatchType.REGEX)) {
+        if (matchType.equals(ChatListenerEntry.MatchType.REGEX)) {
           Pattern pattern;
           try {
             pattern = Pattern.compile(matchMessage);
@@ -122,13 +121,13 @@ public class ChatReceiveEventListener {
           }
         }
 
-        if (matchType.equals(MatchType.EQUALS)) {
+        if (matchType.equals(ChatListenerEntry.MatchType.EQUALS)) {
           if (!e.chatMessage().getPlainText().equals(matchMessage)) {
             continue;
           }
         }
 
-        if (matchType.equals(MatchType.CONTAINS)) {
+        if (matchType.equals(ChatListenerEntry.MatchType.CONTAINS)) {
           if (!e.chatMessage().getPlainText().contains(matchMessage)) {
             continue;
           }

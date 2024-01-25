@@ -1,15 +1,16 @@
-package org.chatutilities.core.config;
+package art.ameliah.laby.addons.chatutilities.core.config;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import art.ameliah.laby.addons.chatutilities.core.config.impl.ChatListenerEntry;
+import art.ameliah.laby.addons.chatutilities.core.config.impl.TextReplacementEntry;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.TextFieldSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
 import net.labymod.api.configuration.loader.annotation.Exclude;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
-import org.chatutilities.core.config.impl.ChatListenerEntry;
-import org.chatutilities.core.config.impl.TextReplacementEntry;
 
 @ConfigName("settings")
 public class MainConfig extends AddonConfig {

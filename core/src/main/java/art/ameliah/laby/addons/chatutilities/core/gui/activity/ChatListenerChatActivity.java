@@ -1,7 +1,13 @@
-package org.chatutilities.core.gui.activity;
+package art.ameliah.laby.addons.chatutilities.core.gui.activity;
 
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
+
+import art.ameliah.laby.addons.chatutilities.core.config.MainConfig;
+import art.ameliah.laby.addons.chatutilities.core.config.impl.ChatListenerEntry;
+import net.labymod.api.Laby;
 import net.labymod.api.Textures.SpriteCommon;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
@@ -20,20 +26,18 @@ import net.labymod.api.client.gui.screen.widget.widgets.layout.ScrollWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.renderer.IconWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.renderer.ScreenRendererWidget;
-import org.chatutilities.core.CU;
-import org.chatutilities.core.config.MainConfig;
-import org.chatutilities.core.config.impl.TextReplacementEntry;
+import art.ameliah.laby.addons.chatutilities.core.CU;
 import org.jetbrains.annotations.NotNull;
 
 @Link("chatinput/entry.lss")
 @AutoActivity
-public class TextReplacementChatActivity extends ChatInputTabSettingActivity<FlexibleContentWidget> {
+public class ChatListenerChatActivity extends ChatInputTabSettingActivity<FlexibleContentWidget> {
 
-  private TextReplacementEntry original;
-  private TextReplacementEntry editing;
+  private ChatListenerEntry original;
+  private ChatListenerEntry editing;
   private MainConfig config;
 
-  public TextReplacementChatActivity() {
+  public ChatListenerChatActivity() {
     this.config = CU.get().configuration();
   }
 
@@ -48,7 +52,7 @@ public class TextReplacementChatActivity extends ChatInputTabSettingActivity<Fle
     this.contentWidget.addId("window");
     DivWidget titleBar = new DivWidget();
     titleBar.addId("title-bar");
-    ComponentWidget title = ComponentWidget.component(Component.translatable("chatutilities.chatInput.textreplacement.name"));
+    ComponentWidget title = ComponentWidget.component(Component.translatable("chatutilities.chatInput.chatlisteners.name"));
     title.addId("title");
     titleBar.addChild(title);
     DivWidget buttonWrapper = new DivWidget();
@@ -61,7 +65,7 @@ public class TextReplacementChatActivity extends ChatInputTabSettingActivity<Fle
       buttonWrapper.addChild(iconWidget);
       buttonWrapper.setPressable(() -> {
         this.original = null;
-        this.editing = new TextReplacementEntry();
+        this.editing = new ChatListenerEntry();
         this.reload();
       });
     } else {
@@ -70,9 +74,23 @@ public class TextReplacementChatActivity extends ChatInputTabSettingActivity<Fle
       iconWidget.setHoverComponent(Component.translatable("labymod.ui.button.save"));
       buttonWrapper.addChild(iconWidget);
       buttonWrapper.setPressable(() -> {
-        if (!this.editing.displayName().get().isEmpty()) {
-          this.config.getTextReplacements().get().remove(this.original == null ? this.editing : this.original);
-          this.config.getTextReplacements().get().add(this.editing);
+        if (!this.editing.getDisplayName().get().isEmpty()) {
+
+          if (this.editing.getMatchType().get().equals(ChatListenerEntry.MatchType.REGEX)) {
+            try {
+              Pattern.compile(this.editing.getRegex().get());
+            } catch (PatternSyntaxException e) {
+              Laby.labyAPI().minecraft().chatExecutor().displayClientMessage(
+                  Component.text("[", NamedTextColor.WHITE)
+                      .append(Component.text("CU", NamedTextColor.GREEN))
+                      .append(Component.text("]", NamedTextColor.WHITE))
+                      .append(Component.translatable("chatutilities.errors.invalidRegex", NamedTextColor.RED))
+              );
+              this.editing.getEnabled().set(false);
+            }
+          }
+          this.config.getChatListeners().get().remove(this.original == null ? this.editing : this.original);
+          this.config.getChatListeners().get().add(this.editing);
           CU.get().saveConfiguration();
         }
 
@@ -90,9 +108,9 @@ public class TextReplacementChatActivity extends ChatInputTabSettingActivity<Fle
       VerticalListWidget<Widget> list = new VerticalListWidget<>();
       list.addId("entries");
 
-      TextReplacementEntry[] textReplacementEntries = this.config.getTextReplacements().get().toArray(new TextReplacementEntry[0]);
-      Arrays.sort(textReplacementEntries, new SortByDisplayName());
-      for (TextReplacementEntry entry : textReplacementEntries) {
+      ChatListenerEntry[] chatListenerEntries = this.config.getChatListeners().get().toArray(new ChatListenerEntry[0]);
+      Arrays.sort(chatListenerEntries, new SortByDisplayName());
+      for (ChatListenerEntry entry : chatListenerEntries) {
         list.addChild(this.createEntry(entry));
       }
       ScrollWidget scrollWidget = new ScrollWidget(list);
@@ -101,7 +119,7 @@ public class TextReplacementChatActivity extends ChatInputTabSettingActivity<Fle
     } else {
       ScreenRendererWidget screen = new ScreenRendererWidget(true);
       screen.addId("settings");
-      SettingContentActivity settings = new SettingContentActivity(this.editing.asRegistry("textreplacement").translationId("chatInput.tab.textreplacement"));
+      SettingContentActivity settings = new SettingContentActivity(this.editing.asRegistry("chatlistener").translationId("chatInput.tab.chatlistener"));
       settings.setHeaderType(HeaderType.FIXED);
       screen.displayScreen(settings);
       contentWrapper.addChild(screen);
@@ -111,12 +129,12 @@ public class TextReplacementChatActivity extends ChatInputTabSettingActivity<Fle
     return this.contentWidget;
   }
 
-  @NotNull private Widget createEntry(@NotNull TextReplacementEntry entry) {
+  @NotNull private Widget createEntry(@NotNull ChatListenerEntry entry) {
     DivWidget list = new DivWidget();
     list.addId("entry");
-    String displayName = entry.displayName().get();
+    String displayName = entry.getDisplayName().get();
     if (displayName.isEmpty()) {
-      displayName = entry.message().get();
+      displayName = entry.getRegex().get();
     }
 
     ComponentWidget keyWidget = ComponentWidget.component(Component.text(displayName, NamedTextColor.GREEN));
@@ -125,25 +143,27 @@ public class TextReplacementChatActivity extends ChatInputTabSettingActivity<Fle
     IconWidget delete = new IconWidget(SpriteCommon.SMALL_X);
     list.addChild(delete).addId("delete");
     delete.setPressable(() -> {
-      this.config.getTextReplacements().get().remove(entry);
+      this.config.getChatListeners().get().remove(entry);
       CU.get().saveConfiguration();
       this.reload();
     });
     list.setPressable(() -> {
       this.original = entry;
       this.editing = entry.copy();
-      if (this.editing.displayName().get().isEmpty()) {
-        this.editing.displayName().set(this.editing.message().get());
+      if (this.editing.getDisplayName().get().isEmpty()) {
+        this.editing.getDisplayName().set(this.editing.getRegex().get());
       }
       this.reload();
     });
     return list;
   }
 
-  private static class SortByDisplayName implements Comparator<TextReplacementEntry> {
+  private static class SortByDisplayName implements Comparator<ChatListenerEntry> {
     @Override
-    public int compare(TextReplacementEntry o1, TextReplacementEntry o2) {
-      return o1.displayName().get().compareTo(o2.displayName().get());
+    public int compare(ChatListenerEntry o1, ChatListenerEntry o2) {
+      return o1.getDisplayName().get().compareTo(o2.getDisplayName().get());
     }
   }
+
+
 }

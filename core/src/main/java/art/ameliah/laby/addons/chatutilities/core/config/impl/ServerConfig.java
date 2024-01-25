@@ -1,4 +1,4 @@
-package org.chatutilities.core.config.impl;
+package art.ameliah.laby.addons.chatutilities.core.config.impl;
 
 import net.labymod.api.Laby;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
