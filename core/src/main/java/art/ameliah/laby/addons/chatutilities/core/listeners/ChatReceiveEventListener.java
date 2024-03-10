@@ -52,9 +52,10 @@ public class ChatReceiveEventListener {
 
       for (ChatListenerEntry chatListener : this.addon.configuration().getChatListeners().get()) {
         if (!chatListener.getEnabled().get()
-            || chatListener.getServerConfig().notAllowedToBeUsed(
-            this.addon.labyAPI().serverController().getCurrentServerData())
-            || !chatListener.getCubeCraftSupport().canUse()) {
+            || (chatListener.getServerConfig().enabled().get()
+            && chatListener.getServerConfig().notAllowedToBeUsed(
+            this.addon.labyAPI().serverController().getCurrentServerData()
+        ))) {
           continue;
         }
 
