@@ -9,10 +9,12 @@ import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.component.format.Style;
 import net.labymod.api.client.component.format.TextDecoration;
 import net.labymod.api.client.gui.hud.binding.category.HudWidgetCategory;
+import net.labymod.api.client.gui.hud.hudwidget.text.Formatting;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidget;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextHudWidgetConfig;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine;
 import net.labymod.api.client.gui.hud.hudwidget.text.TextLine.State;
+import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.client.render.font.ComponentMapper;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import art.ameliah.laby.addons.chatutilities.core.gui.hud.widget.ChatMessagePreviewWidget.ChatMessagePreviewConfig;
@@ -29,6 +31,7 @@ public class ChatMessagePreviewWidget extends TextHudWidget<ChatMessagePreviewCo
     super("chat-utilities::chat_message_preview", ChatMessagePreviewConfig.class);
 
     this.bindCategory(HudWidgetCategory.MISCELLANEOUS);
+    this.bindDropzones(new ChatMessagePreviewHudWidgetDropzone());
 
     this.chat = Laby.references().chatExecutor();
     this.componentMapper = Laby.references().componentMapper();
@@ -55,9 +58,9 @@ public class ChatMessagePreviewWidget extends TextHudWidget<ChatMessagePreviewCo
     }
 
     String component = this.componentMapper.translateColorCodes(msg);
-    boolean changed = component.equals(msg);
+    boolean equals = component.equals(msg);
 
-    if (this.config.getDisplayFilter().get().equals(DisplayFilter.WHEN_FORMAT) && !changed) {
+    if (this.config.getDisplayFilter().get().equals(DisplayFilter.WHEN_FORMAT) && equals) {
       this.line.setState(State.HIDDEN);
       return;
     }
@@ -68,11 +71,15 @@ public class ChatMessagePreviewWidget extends TextHudWidget<ChatMessagePreviewCo
 
   @Override
   public void load(ChatMessagePreviewConfig config) {
-    this.line = this.createLine("", "");
+    super.load(config);
+
+    this.config.formatting().set(Formatting.VALUE_ONLY);
+    this.line = super.createLine("Remove me", "");
   }
 
   public static class ChatMessagePreviewConfig extends TextHudWidgetConfig {
 
+    @DropdownSetting
     private final ConfigProperty<DisplayFilter> displayFilter = new ConfigProperty<>(DisplayFilter.WHEN_FORMAT);
 
     public ConfigProperty<DisplayFilter> getDisplayFilter() {

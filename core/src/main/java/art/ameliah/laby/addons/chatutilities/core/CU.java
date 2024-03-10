@@ -3,6 +3,7 @@ package art.ameliah.laby.addons.chatutilities.core;
 import art.ameliah.laby.addons.chatutilities.core.config.MainConfig;
 import art.ameliah.laby.addons.chatutilities.core.gui.activity.ChatListenerChatActivity;
 import art.ameliah.laby.addons.chatutilities.core.gui.activity.TextReplacementChatActivity;
+import art.ameliah.laby.addons.chatutilities.core.gui.hud.widget.ChatMessagePreviewWidget;
 import art.ameliah.laby.addons.chatutilities.core.listeners.ChatMessageSendEventListener;
 import art.ameliah.laby.addons.chatutilities.core.listeners.ChatReceiveEventListener;
 import art.ameliah.laby.addons.chatutilities.core.listeners.ChatReceiveReplaceListener;
@@ -38,8 +39,10 @@ public class CU extends LabyAddon<MainConfig> {
       this.labyAPI().chatProvider().chatInputService().register(CU.getTextReplacementWidget());
     }
     if (this.configuration().getChatListenerSubConfig().isEnabled()) {
-    this.labyAPI().chatProvider().chatInputService().register(CU.getChatListenerWidget());
+      this.labyAPI().chatProvider().chatInputService().register(CU.getChatListenerWidget());
     }
+
+    this.labyAPI().hudWidgetRegistry().register(ChatMessagePreviewWidget::new);
   }
 
   @Override

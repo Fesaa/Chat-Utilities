@@ -173,6 +173,19 @@
     },
     "errors": {
       "invalidRegex": " The Chat Listener has been disabled as your message contained invalid regex"
+    },
+    "hudWidget": {
+      "chat-utilities::chat_message_preview": {
+        "name": "Chat Message Preview",
+        "description": "Format your typed message with colour codes.",
+        "displayFilter": {
+          "name": "When to display",
+          "entries": {
+            "always": "Always",
+            "whenFormat": "Only when formatted"
+          }
+        }
+      }
     }
   },
   "labymod": {
