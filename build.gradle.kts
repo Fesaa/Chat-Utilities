@@ -20,7 +20,6 @@ labyMod {
         description = "Adds chat listeners and text replacement to the LabyMod client."
         minecraftVersion = "*"
         version = System.getenv().getOrDefault("VERSION", "0.0.1")
-        addonDependencies.add(AddonDependency("cubepanion", true))
     }
 
     minecraft {
