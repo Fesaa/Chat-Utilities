@@ -73,7 +73,6 @@ public class ChatMessagePreviewWidget extends TextHudWidget<ChatMessagePreviewCo
   public void load(ChatMessagePreviewConfig config) {
     super.load(config);
 
-    this.config.formatting().set(Formatting.VALUE_ONLY);
     this.line = super.createLine("Remove me", "");
   }
 
