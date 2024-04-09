@@ -9,7 +9,7 @@ plugins {
 group = "org.example"
 version = "1.0.0"
 
-java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+java.toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 
 labyMod {
     defaultPackageName = "art.ameliah.laby.addons.chatutilities" //change this to your main package name (used by all modules)
@@ -71,7 +71,7 @@ fun configureRun(provider: net.labymod.gradle.core.minecraft.provider.VersionPro
         args("--addon-dev-environment", "true")
     }
 
-    provider.javaVersion = JavaVersion.VERSION_17
+    provider.javaVersion = JavaVersion.VERSION_21
 
     provider.mixin {
         val mixinMinVersion = when (gameVersion) {
