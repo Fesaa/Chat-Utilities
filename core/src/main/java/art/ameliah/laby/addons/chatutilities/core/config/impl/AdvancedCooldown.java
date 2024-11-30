@@ -1,10 +1,11 @@
 package art.ameliah.laby.addons.chatutilities.core.config.impl;
 
 import net.labymod.api.client.gui.screen.widget.widgets.input.SliderWidget.SliderSetting;
+import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.dropdown.DropdownWidget.DropdownSetting;
 import net.labymod.api.configuration.loader.Config;
 import net.labymod.api.configuration.loader.annotation.Exclude;
-import net.labymod.api.configuration.loader.annotation.ParentSwitch;
+import net.labymod.api.configuration.loader.annotation.ShowSettingInParent;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,8 @@ public class AdvancedCooldown extends Config {
     lastUsage = 0;
   }
 
-  @ParentSwitch
+  @SwitchSetting
+  @ShowSettingInParent
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(false);
 
   @SliderSetting(min = 0, max = 10, steps = 0.1F)

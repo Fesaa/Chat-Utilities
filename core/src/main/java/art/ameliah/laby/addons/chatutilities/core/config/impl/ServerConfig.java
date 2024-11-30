@@ -5,13 +5,14 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.Switc
 import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget.TextFieldSetting;
 import net.labymod.api.client.network.server.ServerData;
 import net.labymod.api.configuration.loader.Config;
-import net.labymod.api.configuration.loader.annotation.ParentSwitch;
+import net.labymod.api.configuration.loader.annotation.ShowSettingInParent;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
 import net.labymod.api.configuration.settings.annotation.SettingRequires;
 
 public class ServerConfig extends Config {
 
-  @ParentSwitch
+  @SwitchSetting
+  @ShowSettingInParent
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(false);
 
   @SwitchSetting
