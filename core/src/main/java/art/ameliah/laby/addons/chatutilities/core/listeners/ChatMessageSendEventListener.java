@@ -12,13 +12,13 @@ public class ChatMessageSendEventListener {
   public ChatMessageSendEventListener(CU addon) {this.addon = addon;}
 
   @Subscribe
-  public void onChatMessageSendEvent(ChatMessageSendEvent e) {
+  public void onChatMessageSendEvent(ChatMessageSendEvent chatMessageSendEvent) {
     if (!this.addon.configuration().textReplacement().get()
     || !this.addon.configuration().enabled().get()) {
       return;
     }
 
-    String msg = e.getMessage();
+    String msg = chatMessageSendEvent.getMessage();
 
     for (TextReplacementEntry textReplacement : this.addon.configuration().getTextReplacements().get()) {
       if (!textReplacement.getEnabled().get()
@@ -31,8 +31,8 @@ public class ChatMessageSendEventListener {
       msg = msg.replace(textReplacement.getText().get(), textReplacement.message().get());
     }
 
-    e.changeMessage(msg);
-    e.setCancelled(e.isCancelled());
+    chatMessageSendEvent.changeMessage(msg);
+
   }
 
 }
